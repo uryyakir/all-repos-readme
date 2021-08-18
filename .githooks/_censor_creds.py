@@ -11,10 +11,8 @@ def main() -> int:
             with open(GithubConstants.GITHUB_CONFIG_FILE.value, mode='w', encoding='utf-8') as out_config_file:
                 json.dump(config_json, out_config_file, indent=2)
 
-            print("here")
             return 1
 
-    print("there")
     return 0
 
 
