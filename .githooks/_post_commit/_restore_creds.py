@@ -1,7 +1,7 @@
 import json
 from github_utils.constants import GithubConstants, GitConstants
 from github_utils.git_utils import git_config
-from configparser import NoOptionError
+from configparser import NoOptionError, NoSectionError
 
 
 def main() -> int:
@@ -15,7 +15,7 @@ def main() -> int:
 
             del git_config[GitConstants.API_KEY_CONFIG_PROPERTY]
 
-        except NoOptionError:  # key was not set in pre-commit hook, probably because api_key was already censored
+        except (NoOptionError, NoSectionError):  # key was not set in pre-commit hook, probably because api_key was already censored
             pass
 
     return 0

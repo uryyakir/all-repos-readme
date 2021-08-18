@@ -9,6 +9,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     parser.add_argument('--readme-string', '-rs', nargs=1, help='markdown-supported string to be added as a README to all repos')
     res = parser.parse_args(argv)
     print(res)
+    return 0
 
 
 if __name__ == "__main__":

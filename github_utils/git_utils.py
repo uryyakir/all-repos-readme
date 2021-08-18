@@ -1,4 +1,5 @@
 from typing import Tuple
+from typing import Any
 from git import Repo
 import os
 # local modules
@@ -9,10 +10,10 @@ class _Git:
     def __init__(self, directory: str = os.getcwd()):
         self._directory = directory
         self._repo = Repo.init(self._directory)
-        
-        
+
+
 class GitConfigHandler(_Git):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         super(GitConfigHandler, self).__init__(*args, **kwargs)
 
     def __getitem__(self, item: Tuple[str, str]) -> str:
