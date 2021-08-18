@@ -24,7 +24,7 @@ class GitConfigHandler(_Git):
         return
 
     def __delitem__(self, key: Tuple[str, str]) -> None:
-        self._repo.config_writer(config_level=GitConstants.CONFIG_LEVEL).remove_section(GitConstants.API_KEY_CONFIG_SECTION).relase()
+        self._repo.config_writer(config_level=GitConstants.CONFIG_LEVEL).remove_section(GitConstants.API_KEY_CONFIG_SECTION)
         return
 
 
