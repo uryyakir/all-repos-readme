@@ -17,4 +17,5 @@ def main() -> int:
 
 
 if __name__ == "__main__":
+    print("random change")
     exit(main())  # exit with an exit-code indicating whether a change was needed or not
