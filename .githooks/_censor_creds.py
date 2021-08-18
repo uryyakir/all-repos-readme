@@ -17,4 +17,4 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    exit(main())
+    exit(main())  # exit with an exit-code indicating whether a change was needed or not
