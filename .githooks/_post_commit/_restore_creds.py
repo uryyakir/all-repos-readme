@@ -1,6 +1,6 @@
 import json
-from github_utils.constants import GithubConstants, GitConstants
-from github_utils.git_utils import git_config
+from all_repos_add_readme.github_utils.constants import GithubConstants, GitConstants
+from all_repos_add_readme.github_utils.git_utils import git_config
 from configparser import NoOptionError, NoSectionError
 
 
