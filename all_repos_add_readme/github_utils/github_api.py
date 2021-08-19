@@ -1,6 +1,6 @@
-from typing import NamedTuple
 from typing import Optional
 from typing import List
+from typing import Any
 from github import Github
 from github.Repository import Repository
 from github.GithubException import UnknownObjectException
@@ -16,7 +16,7 @@ from all_repos_add_readme.github_utils._github_config import _GithubConfig
 
 
 class GitHubAPI:
-    def __init__(self, **kwargs) -> None:
+    def __init__(self, **kwargs: Any) -> None:
         self._user_input = kwargs["user_input"]
         self._dry_run = kwargs["dry_run"]
         self._commit_message = kwargs["commit_message"][0] + TOOL_COMMIT_SIGNATURE if kwargs["commit_message"] else TOOL_COMMIT_MESSAGE
@@ -45,7 +45,7 @@ class GitHubAPI:
         elif _should_ignore:
             print(f"skipping {github_repo.full_name}: found in .repoignore")
 
-    def _run_tool(self, github_repo: Repository, exception: UnknownObjectException):
+    def _run_tool(self, github_repo: Repository, exception: UnknownObjectException) -> None:
         print(f"creating README.md for {github_repo.name}")
         _repo = _Repo(repo=github_repo)
         readme_content = _repo.generate_readme_string(self._user_input)
