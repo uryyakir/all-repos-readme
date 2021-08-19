@@ -7,9 +7,10 @@ class InvalidReadme(BaseException):
         super(InvalidReadme, self).__init__(message)
 
 
-class RepoReadmeNeedsCreationOrUpdate(UnknownObjectException):
-    def __init__(self) -> None:
-        super(RepoReadmeNeedsCreationOrUpdate, self).__init__("", "", {})
+class RepoReadmeNeedsUpdate(UnknownObjectException):
+    def __init__(self, readme_sha: str) -> None:
+        super(RepoReadmeNeedsUpdate, self).__init__("", "", {})
+        self.sha = readme_sha
 
 
 class ExceptionMessages(Enum):

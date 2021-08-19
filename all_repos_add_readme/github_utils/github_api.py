@@ -1,6 +1,4 @@
 from typing import NamedTuple
-from typing import TextIO
-from typing import Union
 from typing import Optional
 from typing import List
 from typing import Dict
@@ -8,12 +6,13 @@ from github import Github
 from github import Repository
 from github.GithubException import UnknownObjectException
 import json
-from _io import TextIOWrapper
 import datetime as dt
 from bs4 import BeautifulSoup as Soup
 # local modules
-from all_repos_add_readme.github_utils.exceptions import RepoReadmeNeedsCreationOrUpdate
+from all_repos_add_readme.github_utils.exceptions import RepoReadmeNeedsUpdate
 from all_repos_add_readme.github_utils.constants import TOOL_NAME
+from all_repos_add_readme.github_utils.constants import TOOL_COMMIT_MESSAGE
+from all_repos_add_readme.github_utils.constants import TOOL_DISCLAIMER_MD
 
 
 class GithubConfig(NamedTuple):
@@ -24,6 +23,8 @@ class GithubConfig(NamedTuple):
 class Repo:
     def __init__(self, repo: Repository.Repository) -> None:
         self._repo = repo
+        self.tool_name = TOOL_NAME
+        self.current_date = dt.date.today().strftime("%d/%m/%Y")
         # extracted properties
         self.full_name = repo.full_name
         self.description = repo.description if repo.description else ''
@@ -57,27 +58,26 @@ class Repo:
 
         return soup_object
 
-    def generate_readme_string(self, user_input: Optional[Union[str, TextIO]]) -> str:
+    def _append_tool_disclaimer(self, markdown_string: str) -> str:
+        return markdown_string + "\n" + TOOL_DISCLAIMER_MD.format(**self.__dict__)
+
+    def generate_readme_string(self, user_input: Optional[str]) -> str:
         if user_input:
             if isinstance(user_input, str):
-                return user_input
-
-            elif isinstance(user_input, TextIOWrapper):
-                return user_input.read()
-
+                markdown_string = user_input
             else:
                 raise NotImplementedError()
 
         else:
             with open("all_repos_add_readme/readme_template.md", 'r', encoding='utf-8') as readme_template_file:
                 formatted_readme = readme_template_file.read().format(
-                    **self.__dict__,
-                    current_date=dt.date.today().strftime("%d/%m/%Y"),
-                    tool_name=TOOL_NAME
+                    **self.__dict__
                 )
 
             with_formatted_languages = self._inject_used_languages(formatted_readme)
-            return with_formatted_languages.prettify().replace("&gt;", ">").replace("&lt:", "<")
+            markdown_string = with_formatted_languages.prettify().replace("&gt;", ">").replace("&lt:", "<")
+
+        return self._append_tool_disclaimer(markdown_string)
 
 
 def main(user_input: Optional[str]) -> None:
@@ -88,27 +88,38 @@ def main(user_input: Optional[str]) -> None:
     for github_repo in set(github.get_user().get_repos(affiliation='owner')):
         if not github_repo.fork:
             try:
-                readme_content = github_repo.get_contents(
+                readme_file = github_repo.get_contents(
                     github_repo.get_readme().path
-                ).decoded_content.decode()
+                )
+                readme_content = readme_file.decoded_content.decode()
+
                 if TOOL_NAME in readme_content:
                     # repo already has a README.md file generate by the tool
                     # let's update its stats
-                    raise RepoReadmeNeedsCreationOrUpdate
+                    raise RepoReadmeNeedsUpdate(readme_sha=readme_file.sha)
 
                 else:
                     pass  # noop
 
-            except UnknownObjectException:  # no README
-                print(f"creating README.md for {github_repo.name}")
-                _repo = Repo(repo=github_repo)
-                content = _repo.generate_readme_string(user_input)
-                print(content)
-                # repo.create_file(
-                #     path="README.md",
-                #     message="add README.md (automatically committed by the `all_repos_add_readme` tool)",
-                #     content=content,
-                # )
+            except UnknownObjectException as exc:  # no README
+                if github_repo.name == "github-linter-CI":
+                    print(f"creating README.md for {github_repo.name}")
+                    _repo = Repo(repo=github_repo)
+                    content = _repo.generate_readme_string(user_input)
+                    if isinstance(exc, RepoReadmeNeedsUpdate):
+                        github_repo.update_file(
+                            path="README.md",
+                            message=TOOL_COMMIT_MESSAGE,
+                            content=content,
+                            sha=exc.sha
+                        )
+
+                    else:
+                        github_repo.create_file(
+                            path="README.md",
+                            message=TOOL_COMMIT_MESSAGE,
+                            content=content,
+                        )
 
 
 if __name__ == "__main__":

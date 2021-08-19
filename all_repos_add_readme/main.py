@@ -25,7 +25,7 @@ def _validate_input(res: Namespace) -> Optional[str]:
             return readme_file.read()
 
     elif res.readme_string:
-        return res.readme_string
+        return res.readme_string[0]
 
     else:
         raise NotImplementedError("invalid user input!")
@@ -48,5 +48,13 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 
 
 if __name__ == "__main__":
-    # exit(main(['-rs', 'some string']))
-    exit(main(['--readme-file', 'all_repos_add_readme/readme_template.md']))
+    #     exit(main(['-rs', """
+    # # some string
+    # ## some other string
+    # <ul>
+    #     <li>item1</li>
+    #     <li>item12</li>
+    # </ul>
+    #     """]))
+    exit(main())
+    # exit(main(['--readme-file', 'all_repos_add_readme/readme_template.md']))
