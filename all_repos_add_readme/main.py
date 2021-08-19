@@ -57,4 +57,4 @@ if __name__ == "__main__":
     # </ul>
     #     """]))
     exit(main())
-    # exit(main(['--readme-file', 'all_repos_add_readme/readme_template.md']))
+    # exit(main(['--readme-file', 'generic.md']))

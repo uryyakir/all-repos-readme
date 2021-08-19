@@ -13,6 +13,7 @@ from all_repos_add_readme.github_utils.exceptions import RepoReadmeNeedsUpdate
 from all_repos_add_readme.github_utils.constants import TOOL_NAME
 from all_repos_add_readme.github_utils.constants import TOOL_COMMIT_MESSAGE
 from all_repos_add_readme.github_utils.constants import TOOL_DISCLAIMER_MD
+from all_repos_add_readme.github_utils.repo_ignore import RepoIgnore
 
 
 class GithubConfig(NamedTuple):
@@ -85,8 +86,10 @@ def main(user_input: Optional[str]) -> None:
         github_config = GithubConfig(**json.load(config_file))
 
     github = Github(login_or_token=github_config.apiKey)
+    repo_ignore = RepoIgnore()
     for github_repo in set(github.get_user().get_repos(affiliation='owner')):
-        if not github_repo.fork:
+        _should_ignore = repo_ignore.should_ignore(github_repo)
+        if not github_repo.fork and not _should_ignore:
             try:
                 readme_file = github_repo.get_contents(
                     github_repo.get_readme().path
@@ -102,24 +105,26 @@ def main(user_input: Optional[str]) -> None:
                     pass  # noop
 
             except UnknownObjectException as exc:  # no README
-                if github_repo.name == "github-linter-CI":
-                    print(f"creating README.md for {github_repo.name}")
-                    _repo = Repo(repo=github_repo)
-                    content = _repo.generate_readme_string(user_input)
-                    if isinstance(exc, RepoReadmeNeedsUpdate):
-                        github_repo.update_file(
-                            path="README.md",
-                            message=TOOL_COMMIT_MESSAGE,
-                            content=content,
-                            sha=exc.sha
-                        )
+                print(f"creating README.md for {github_repo.name}")
+                _repo = Repo(repo=github_repo)
+                content = _repo.generate_readme_string(user_input)
+                if isinstance(exc, RepoReadmeNeedsUpdate):
+                    github_repo.update_file(
+                        path="README.md",
+                        message=TOOL_COMMIT_MESSAGE,
+                        content=content,
+                        sha=exc.sha
+                    )
 
-                    else:
-                        github_repo.create_file(
-                            path="README.md",
-                            message=TOOL_COMMIT_MESSAGE,
-                            content=content,
-                        )
+                else:
+                    github_repo.create_file(
+                        path="README.md",
+                        message=TOOL_COMMIT_MESSAGE,
+                        content=content,
+                    )
+
+        elif _should_ignore:
+            print(f"skipping {github_repo.full_name}: found in .repoignore")
 
 
 if __name__ == "__main__":
