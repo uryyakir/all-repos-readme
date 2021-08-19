@@ -3,7 +3,7 @@ from typing import Any
 from git import Repo
 import os
 # local modules
-from all_repos_add_readme.github_utils.constants import GitConstants
+from all_repos_add_readme.constants import GitConstants
 
 
 class _Git:

@@ -1,6 +1,7 @@
 import json
 import re
-from all_repos_add_readme.github_utils.constants import GithubConstants, GitConstants
+# local modules
+from all_repos_add_readme.constants import GithubConstants, GitConstants
 from all_repos_add_readme.github_utils.git_utils import git_config
 
 

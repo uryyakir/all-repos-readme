@@ -1,19 +1,14 @@
 from typing import NamedTuple
 from typing import Optional
-from typing import List
-from typing import Dict
 from github import Github
-from github import Repository
 from github.GithubException import UnknownObjectException
 import json
-import datetime as dt
-from bs4 import BeautifulSoup as Soup
 # local modules
-from all_repos_add_readme.github_utils.exceptions import RepoReadmeNeedsUpdate
-from all_repos_add_readme.github_utils.constants import TOOL_NAME
-from all_repos_add_readme.github_utils.constants import TOOL_COMMIT_MESSAGE
-from all_repos_add_readme.github_utils.constants import TOOL_DISCLAIMER_MD
-from all_repos_add_readme.github_utils.repo_ignore import RepoIgnore
+from all_repos_add_readme._exceptions import RepoReadmeNeedsUpdate
+from all_repos_add_readme.constants import TOOL_NAME
+from all_repos_add_readme.constants import TOOL_COMMIT_MESSAGE
+from all_repos_add_readme.github_utils._repo_ignore import RepoIgnore
+from all_repos_add_readme.github_utils._github_repo import _Repo
 
 
 class GithubConfig(NamedTuple):
@@ -21,72 +16,13 @@ class GithubConfig(NamedTuple):
     apiKey: str
 
 
-class Repo:
-    def __init__(self, repo: Repository.Repository) -> None:
-        self._repo = repo
-        self.tool_name = TOOL_NAME
-        self.current_date = dt.date.today().strftime("%d/%m/%Y")
-        # extracted properties
-        self.full_name = repo.full_name
-        self.description = repo.description if repo.description else ''
-        self.created_at = repo.created_at
-        self.updated_at = repo.updated_at
-        self.total_commits = repo.get_commits().totalCount
-        self.total_contributors = repo.get_contributors().totalCount
-        self._used_languages = [
-            {
-                "language": language,
-                "percentage": round(
-                    100*(
-                        total_lines / sum(repo.get_languages().values())
-                    )
-                    , 2
-                )
-            } for language, total_lines in repo.get_languages().items()
-        ]
-
-    @property
-    def used_languages(self) -> List[Dict[str, float]]:
-        return sorted(self._used_languages, key=lambda dict_: dict_["percentage"], reverse=True)
-
-    def _inject_used_languages(self, formatted_readme: str) -> Soup:
-        soup_object = Soup(formatted_readme, features="html.parser")
-        used_language_ul = soup_object.find(id="used_languages")
-        for i, language in enumerate(self.used_languages):
-            current_language_tag = soup_object.new_tag("li")
-            current_language_tag.string = f"{language['language']}: {str(language['percentage'])}%"
-            used_language_ul.insert(position=i, new_child=current_language_tag)
-
-        return soup_object
-
-    def _append_tool_disclaimer(self, markdown_string: str) -> str:
-        return markdown_string + "\n" + TOOL_DISCLAIMER_MD.format(**self.__dict__)
-
-    def generate_readme_string(self, user_input: Optional[str]) -> str:
-        if user_input:
-            if isinstance(user_input, str):
-                markdown_string = user_input
-            else:
-                raise NotImplementedError()
-
-        else:
-            with open("all_repos_add_readme/readme_template.md", 'r', encoding='utf-8') as readme_template_file:
-                formatted_readme = readme_template_file.read().format(
-                    **self.__dict__
-                )
-
-            with_formatted_languages = self._inject_used_languages(formatted_readme)
-            markdown_string = with_formatted_languages.prettify().replace("&gt;", ">").replace("&lt:", "<")
-
-        return self._append_tool_disclaimer(markdown_string)
-
-
-def main(user_input: Optional[str]) -> None:
+def main(user_input: Optional[str], dry_run: bool) -> None:
     with open('config.json', encoding='utf8') as config_file:
         github_config = GithubConfig(**json.load(config_file))
 
     github = Github(login_or_token=github_config.apiKey)
     repo_ignore = RepoIgnore()
+
     for github_repo in set(github.get_user().get_repos(affiliation='owner')):
         _should_ignore = repo_ignore.should_ignore(github_repo)
         if not github_repo.fork and not _should_ignore:
@@ -106,22 +42,38 @@ def main(user_input: Optional[str]) -> None:
 
             except UnknownObjectException as exc:  # no README
                 print(f"creating README.md for {github_repo.name}")
-                _repo = Repo(repo=github_repo)
-                content = _repo.generate_readme_string(user_input)
+                _repo = _Repo(repo=github_repo)
+                readme_content = _repo.generate_readme_string(user_input)
+                dry_run_indented_content = '\n'.join(['\t\t' + line for line in readme_content.split('\n')])
                 if isinstance(exc, RepoReadmeNeedsUpdate):
-                    github_repo.update_file(
-                        path="README.md",
-                        message=TOOL_COMMIT_MESSAGE,
-                        content=content,
-                        sha=exc.sha
-                    )
+                    # specific UC where repo already has a README file generated by this tool
+                    # we would like to update the README's stats
+                    if not dry_run:
+                        github_repo.update_file(
+                            path="README.md",
+                            message=TOOL_COMMIT_MESSAGE,
+                            content=readme_content,
+                            sha=exc.sha
+                        )
+
+                    else:
+                        print("--- dry run: updating existing README.md in repo:\n"
+                              f"\tCommit message: {TOOL_COMMIT_MESSAGE}\n"
+                              f"\tNew file content:\n{dry_run_indented_content}\n{'*'*10}")
 
                 else:
-                    github_repo.create_file(
-                        path="README.md",
-                        message=TOOL_COMMIT_MESSAGE,
-                        content=content,
-                    )
+                    # first use UC, repo has no README so we need to generate one
+                    if not dry_run:
+                        github_repo.create_file(
+                            path="README.md",
+                            message=TOOL_COMMIT_MESSAGE,
+                            content=readme_content,
+                        )
+
+                    else:
+                        print("--- dry run: creating README.md in repo:\n"
+                              f"\tCommit message: {TOOL_COMMIT_MESSAGE}\n"
+                              f"\tNew file content:\n{dry_run_indented_content}\n{'*'*10}")
 
         elif _should_ignore:
             print(f"skipping {github_repo.full_name}: found in .repoignore")
@@ -129,4 +81,4 @@ def main(user_input: Optional[str]) -> None:
 
 if __name__ == "__main__":
     # some random input for testing purposes
-    main(None)
+    main(None, dry_run=True)
