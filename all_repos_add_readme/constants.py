@@ -11,6 +11,7 @@ TOOL_COMMIT_SIGNATURE = " (automatically committed by the `all_repos_readme` too
 TOOL_COMMIT_MESSAGE = "add README.md" + TOOL_COMMIT_SIGNATURE
 TOOL_DISCLAIMER_MD = """#### Disclaimer: this is an auto-generated README.md file, committed by the [{tool_name}](https://github.com/uryyakir/all-repos-readme) tool at {current_date}.
 To update repo stats, re-run the tool :)"""
+TOOL_LOGGER_NAME = "logger"
 
 
 class GithubConstants(Enum):

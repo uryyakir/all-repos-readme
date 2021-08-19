@@ -4,9 +4,14 @@ from typing import Optional
 from github import Repository
 import datetime as dt
 from bs4 import BeautifulSoup as Soup
+import logging
 # local modules
 from all_repos_add_readme.constants import TOOL_DISCLAIMER_MD
 from all_repos_add_readme.constants import TOOL_NAME
+from all_repos_add_readme.constants import TOOL_LOGGER_NAME
+
+
+logger = logging.getLogger(TOOL_LOGGER_NAME)
 
 
 class _Repo:
@@ -31,6 +36,7 @@ class _Repo:
                 )
             } for language, total_lines in repo.get_languages().items()
         ]
+        logger.debug("finished extracting repo attributes")
 
     @property
     def used_languages(self) -> List[Dict[str, float]]:
@@ -50,6 +56,7 @@ class _Repo:
         return markdown_string + "\n" + TOOL_DISCLAIMER_MD.format(**self.__dict__)
 
     def generate_readme_string(self, user_input: Optional[str]) -> str:
+        logger.debug("generating readme string for repo...")
         if user_input:
             if isinstance(user_input, str):
                 markdown_string = user_input
