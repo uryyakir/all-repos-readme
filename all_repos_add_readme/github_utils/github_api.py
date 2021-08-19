@@ -1,9 +1,19 @@
 from typing import NamedTuple
-from argparse import Namespace
+from typing import TextIO
+from typing import Union
+from typing import Optional
+from typing import List
+from typing import Dict
 from github import Github
+from github import Repository
 from github.GithubException import UnknownObjectException
 import json
+from _io import TextIOWrapper
+import datetime as dt
+from bs4 import BeautifulSoup as Soup
 # local modules
+from all_repos_add_readme.github_utils.exceptions import RepoReadmeNeedsCreationOrUpdate
+from all_repos_add_readme.github_utils.constants import TOOL_NAME
 
 
 class GithubConfig(NamedTuple):
@@ -11,21 +21,96 @@ class GithubConfig(NamedTuple):
     apiKey: str
 
 
-def main(res: Namespace) -> None:
+class Repo:
+    def __init__(self, repo: Repository.Repository) -> None:
+        self._repo = repo
+        # extracted properties
+        self.full_name = repo.full_name
+        self.description = repo.description if repo.description else ''
+        self.created_at = repo.created_at
+        self.updated_at = repo.updated_at
+        self.total_commits = repo.get_commits().totalCount
+        self.total_contributors = repo.get_contributors().totalCount
+        self._used_languages = [
+            {
+                "language": language,
+                "percentage": round(
+                    100*(
+                        total_lines / sum(repo.get_languages().values())
+                    )
+                    , 2
+                )
+            } for language, total_lines in repo.get_languages().items()
+        ]
+
+    @property
+    def used_languages(self) -> List[Dict[str, float]]:
+        return sorted(self._used_languages, key=lambda dict_: dict_["percentage"], reverse=True)
+
+    def _inject_used_languages(self, formatted_readme: str) -> Soup:
+        soup_object = Soup(formatted_readme, features="html.parser")
+        used_language_ul = soup_object.find(id="used_languages")
+        for i, language in enumerate(self.used_languages):
+            current_language_tag = soup_object.new_tag("li")
+            current_language_tag.string = f"{language['language']}: {str(language['percentage'])}%"
+            used_language_ul.insert(position=i, new_child=current_language_tag)
+
+        return soup_object
+
+    def generate_readme_string(self, user_input: Optional[Union[str, TextIO]]) -> str:
+        if user_input:
+            if isinstance(user_input, str):
+                return user_input
+
+            elif isinstance(user_input, TextIOWrapper):
+                return user_input.read()
+
+            else:
+                raise NotImplementedError()
+
+        else:
+            with open("all_repos_add_readme/readme_template.md", 'r', encoding='utf-8') as readme_template_file:
+                formatted_readme = readme_template_file.read().format(
+                    **self.__dict__,
+                    current_date=dt.date.today().strftime("%d/%m/%Y"),
+                    tool_name=TOOL_NAME
+                )
+
+            with_formatted_languages = self._inject_used_languages(formatted_readme)
+            return with_formatted_languages.prettify().replace("&gt;", ">").replace("&lt:", "<")
+
+
+def main(user_input: Optional[str]) -> None:
     with open('config.json', encoding='utf8') as config_file:
         github_config = GithubConfig(**json.load(config_file))
 
     github = Github(login_or_token=github_config.apiKey)
-    for repo in set(github.get_user().get_repos(affiliation='owner')):
-        if not repo.fork:
+    for github_repo in set(github.get_user().get_repos(affiliation='owner')):
+        if not github_repo.fork:
             try:
-                print(f"{repo.name}: {repo.get_readme()})")
-            except UnknownObjectException:
-                print(f"{repo.name}: error!")
+                readme_content = github_repo.get_contents(
+                    github_repo.get_readme().path
+                ).decoded_content.decode()
+                if TOOL_NAME in readme_content:
+                    # repo already has a README.md file generate by the tool
+                    # let's update its stats
+                    raise RepoReadmeNeedsCreationOrUpdate
+
+                else:
+                    pass  # noop
+
+            except UnknownObjectException:  # no README
+                print(f"creating README.md for {github_repo.name}")
+                _repo = Repo(repo=github_repo)
+                content = _repo.generate_readme_string(user_input)
+                print(content)
+                # repo.create_file(
+                #     path="README.md",
+                #     message="add README.md (automatically committed by the `all_repos_add_readme` tool)",
+                #     content=content,
+                # )
 
 
 if __name__ == "__main__":
     # some random input for testing purposes
-    main(
-        Namespace(readme_file=None, readme_string=["some_string"])
-    )
+    main(None)

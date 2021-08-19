@@ -3,3 +3,4 @@ requests
 gitpython
 mypy
 flake8
+bs4

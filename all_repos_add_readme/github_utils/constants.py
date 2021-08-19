@@ -1,6 +1,9 @@
 from enum import Enum
 
 
+TOOL_NAME = "all_repos_add_readme"
+
+
 class GithubConstants(Enum):
     API_KEY = "apiKey"
     USERNAME = "username"
