@@ -13,7 +13,7 @@ class GithubConstants(Enum):
     GITHUB_CONFIG_FILE = "config.json"
 
 
-class GitConstants:
+class GitConstants(Enum):
     CONFIG_LEVEL = "repository"
     API_KEY_CONFIG_SECTION = "user"
-    API_KEY_CONFIG_PROPERTY = (API_KEY_CONFIG_SECTION, GithubConstants.API_KEY.value)
+    API_KEY_CONFIG_PROPERTY = (API_KEY_CONFIG_SECTION, GithubConstants.API_KEY)

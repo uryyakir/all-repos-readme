@@ -17,14 +17,14 @@ class GitConfigHandler(_Git):
         super(GitConfigHandler, self).__init__(*args, **kwargs)
 
     def __getitem__(self, item: Tuple[str, str]) -> str:
-        return self._repo.config_reader(config_level=GitConstants.CONFIG_LEVEL).get_value(*item)
+        return self._repo.config_reader(config_level=GitConstants.CONFIG_LEVEL.value).get_value(*item)
 
     def __setitem__(self, key: Tuple[str, str], value: str) -> None:
-        self._repo.config_writer(config_level=GitConstants.CONFIG_LEVEL).set_value(*key, value).release()
+        self._repo.config_writer(config_level=GitConstants.CONFIG_LEVEL.value).set_value(*key, value).release()
         return
 
     def __delitem__(self, key: Tuple[str, str]) -> None:
-        self._repo.config_writer(config_level=GitConstants.CONFIG_LEVEL).remove_section(GitConstants.API_KEY_CONFIG_SECTION)
+        self._repo.config_writer(config_level=GitConstants.CONFIG_LEVEL.value).remove_section(GitConstants.API_KEY_CONFIG_SECTION.value)
         return
 
 
