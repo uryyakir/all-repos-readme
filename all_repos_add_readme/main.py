@@ -4,7 +4,7 @@ from typing import Optional
 from typing import Sequence
 import os
 # local modules
-from all_repos_add_readme.github_utils import github_api
+from all_repos_add_readme.github_utils import _github_api
 from all_repos_add_readme._exceptions import InvalidReadme, ExceptionMessages
 from all_repos_add_readme.constants import TOOL_CLI_DESCRIPTION
 
@@ -37,7 +37,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     parser.add_argument('--dry-run', '-dr', action='store_true', help='prevents tool from actually making commits to user\'s repo, but preforms the same run-flow')
     res = parser.parse_args(argv)
     input_ = _validate_input(res)
-    github_api.main(input_, res.dry_run)
+    _github_api.main(input_, res.dry_run)
     return 0
 
 
