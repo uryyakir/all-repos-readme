@@ -4,9 +4,10 @@ from typing import Optional
 from typing import Sequence
 import os
 # local modules
-from all_repos_add_readme.github_utils import _github_api
+from all_repos_add_readme.github_utils import github_api
 from all_repos_add_readme._exceptions import InvalidReadme, ExceptionMessages
 from all_repos_add_readme.constants import TOOL_CLI_DESCRIPTION
+from all_repos_add_readme.constants import TOOL_COMMIT_MESSAGE
 
 
 def _validate_input(res: Namespace) -> Optional[str]:
@@ -34,10 +35,12 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(description=TOOL_CLI_DESCRIPTION)
     parser.add_argument('--readme-file', '-rf', nargs=1, help='path to readme file that should be added to all repos')
     parser.add_argument('--readme-string', '-rs', nargs=1, help='markdown-supported string to be added as a README to all repos')
-    parser.add_argument('--dry-run', '-dr', action='store_true', help='prevents tool from actually making commits to user\'s repo, but preforms the same run-flow')
+    parser.add_argument('--dry-run', action='store_true', help='prevents tool from actually making commits to user\'s repo, but preforms the same workflow')
+    parser.add_argument('--commit-message', nargs=1, help=f'provide a custom commit message for the creation or update of the README.md file.\nDefault: "{TOOL_COMMIT_MESSAGE}"')
     res = parser.parse_args(argv)
     input_ = _validate_input(res)
-    _github_api.main(input_, res.dry_run)
+    github_api.main(input_, res.dry_run, res.commit_message)
+
     return 0
 
 
