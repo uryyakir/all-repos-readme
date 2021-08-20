@@ -27,3 +27,8 @@ class GitConstants(Enum):
     CONFIG_LEVEL = "repository"
     API_KEY_CONFIG_SECTION = "user"
     API_KEY_CONFIG_PROPERTY = (API_KEY_CONFIG_SECTION, GithubConstants.API_KEY.value)
+
+
+class LoggerColoring(Enum):
+    GREEN = "\x1b[32m"
+    RESET_SEQ = "\033[0m"

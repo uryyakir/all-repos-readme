@@ -68,5 +68,5 @@ if __name__ == "__main__":
     #     <li>item12</li>
     # </ul>
     # """, "--dry-run"]))
-    exit(main(["--dry-run", "--log-to-file", "-v"]))
+    exit(main(["--dry-run", "-v"]))
     # exit(main(['--readme-file', 'generic.md']))

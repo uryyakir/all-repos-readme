@@ -12,6 +12,7 @@ from all_repos_add_readme.constants import TOOL_NAME
 from all_repos_add_readme.constants import TOOL_COMMIT_MESSAGE
 from all_repos_add_readme.constants import TOOL_COMMIT_SIGNATURE
 from all_repos_add_readme.constants import TOOL_LOGGER_NAME
+from all_repos_add_readme.constants import LoggerColoring
 from all_repos_add_readme.github_utils._repo_ignore import RepoIgnore
 from all_repos_add_readme.github_utils._github_repo import _Repo
 from all_repos_add_readme.github_utils._github_config import _GithubConfig
@@ -104,7 +105,7 @@ def main(user_input: Optional[str], dry_run: bool, commit_message: Optional[List
     github = Github(login_or_token=github_config.apiKey)
     for github_repo in set(github.get_user().get_repos(affiliation='owner')):
         github_api.run_tool(github_repo=github_repo)
-        logger.debug(f"tool run on repo {github_repo.full_name}: done\n{'*' * 10}")
+        logger.info(f"tool run on repo {github_repo.full_name}: {LoggerColoring.GREEN.value}done\n{LoggerColoring.RESET_SEQ.value}{'*' * 10}")
 
     return 0
 
