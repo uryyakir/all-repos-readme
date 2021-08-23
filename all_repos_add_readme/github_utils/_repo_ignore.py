@@ -5,10 +5,10 @@ import re
 from typing import Tuple
 from typing import Any
 # local modules
-from all_repos_add_readme.constants import TOOL_LOGGER_NAME
+from all_repos_add_readme.constants import LoggerConstants
 
 
-logger = logging.getLogger(TOOL_LOGGER_NAME)
+logger = logging.getLogger(LoggerConstants.TOOL_LOGGER_NAME)
 
 
 class RepoIgnore:

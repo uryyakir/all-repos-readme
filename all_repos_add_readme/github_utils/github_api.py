@@ -13,7 +13,7 @@ from all_repos_add_readme._exceptions import RepoReadmeNeedsUpdate
 from all_repos_add_readme.constants import TOOL_NAME
 from all_repos_add_readme.constants import TOOL_COMMIT_MESSAGE
 from all_repos_add_readme.constants import TOOL_COMMIT_SIGNATURE
-from all_repos_add_readme.constants import TOOL_LOGGER_NAME
+from all_repos_add_readme.constants import LoggerConstants
 from all_repos_add_readme.constants import LoggerColoring
 from all_repos_add_readme.constants import GithubConstants
 from all_repos_add_readme.github_utils._repo_ignore import RepoIgnore
@@ -21,7 +21,7 @@ from all_repos_add_readme.github_utils._github_repo import _Repo
 from all_repos_add_readme.github_utils._github_config import _GithubConfig
 
 
-logger = logging.getLogger(TOOL_LOGGER_NAME)
+logger = logging.getLogger(LoggerConstants.TOOL_LOGGER_NAME)
 
 
 class GitHubAPI:
@@ -112,7 +112,7 @@ class GitHubAPI:
 def main(user_input: Optional[str], dry_run: bool, commit_message: Optional[List[str]] = None, **kwargs: Any) -> int:
     changes_dict = {}
     github_api = GitHubAPI(**{**locals(), **kwargs})
-    with open('config.json', encoding='utf8') as config_file:
+    with open(GithubConstants.GITHUB_CONFIG_FILE.value, encoding='utf8') as config_file:
         _config_content = json.load(config_file)
 
     assert GithubConstants.API_KEY.value in _config_content.keys()

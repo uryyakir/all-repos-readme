@@ -10,11 +10,12 @@ from all_repos_add_readme.constants import GithubConstants
 from all_repos_add_readme.constants import TOOL_NAME
 from all_repos_add_readme.constants import TOOL_DISCLAIMER_MD
 from all_repos_add_readme.github_utils._github_repo import _Repo  # noqa
+from all_repos_add_readme.github_utils.git_utils import GitConfigHandler
 
 
 @pytest.fixture
 def get_github_repository_object() -> Repository:
-    with open("config.json", 'r', encoding='utf-8') as config_file:
+    with open(GithubConstants.GITHUB_CONFIG_FILE.value, 'r', encoding='utf-8') as config_file:
         _config = json.load(config_file)
 
     return Github(login_or_token=_config[GithubConstants.API_KEY.value]).get_repo(full_name_or_id="uryyakir/all-repos-readme-testing")
@@ -27,6 +28,14 @@ def get_repo_object(get_github_repository_object: Repository) -> _Repo:
 
 def get_last_commit(get_github_repository_object: Repository) -> Commit:
     return list(get_github_repository_object.get_commits())[0]
+
+
+github_config_handler = GitConfigHandler()
+
+
+@pytest.fixture
+def git_config_handler_object() -> GitConfigHandler:
+    return github_config_handler  # return a reference instead of reinitializing for every test function
 
 
 class Constants:
@@ -46,6 +55,19 @@ class Constants:
     TEST_CUSTOM_COMMIT_MESSAGE = "test commit message"
     ONLY_TEST_AGAINST_REPO_FILTER = (rf"(?!.*({TEST_AGAINST_REPO_NAME}))",)
     TEST_USER_INPUT = "some markdown string input"
+    # test_logger constants
+    LOGFILES_ITERATION_COUNTER = 2
+    CUSTOM_LOGFILE_NAME = "some_logfile_name"
+    # test_main constants
+    CUSTOM_README_STRING = """
+# # some string
+# ## some other string
+# <ul>
+#     <li>item1</li>
+#     <li>item12</li>
+# </ul>
+#
+"""
 
 
 @pytest.fixture

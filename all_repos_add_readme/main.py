@@ -9,12 +9,12 @@ from all_repos_add_readme.github_utils import github_api
 from all_repos_add_readme._exceptions import InvalidReadme, ExceptionMessages
 from all_repos_add_readme.constants import TOOL_CLI_DESCRIPTION
 from all_repos_add_readme.constants import TOOL_COMMIT_MESSAGE
-from all_repos_add_readme.constants import TOOL_LOGGER_NAME
-from all_repos_add_readme.constants import TOOL_DEFAULT_LOGFILE_NAME
+from all_repos_add_readme.constants import LoggerConstants
 from all_repos_add_readme._logger import setup_logger
+from all_repos_add_readme._logger import shutdown_logging
 
 
-logger = logging.getLogger(TOOL_LOGGER_NAME)
+logger = logging.getLogger(LoggerConstants.TOOL_LOGGER_NAME)
 
 
 def _validate_markdown_input(res: Namespace) -> Optional[str]:
@@ -49,12 +49,14 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     parser.add_argument('--verbose', '-v', action='store_true', help='provide debugging information when running tool')
     parser.add_argument('--dry-run', action='store_true', help='prevents tool from actually making commits to user\'s repo, but preforms the same workflow')
     parser.add_argument('--commit-message', nargs=1, help=f'provide a custom commit message for the creation or update of the README.md file.\nDefault: "{TOOL_COMMIT_MESSAGE}"')
-    parser.add_argument('--log-to-file', nargs='?', help='output tool logs to file', const=TOOL_DEFAULT_LOGFILE_NAME)
+    parser.add_argument('--log-to-file', nargs='?', help='output tool logs to file', const=LoggerConstants().tool_default_logfile_name)
     res = parser.parse_args(argv)
 
     input_ = _validate_markdown_input(res)
-    setup_logger(logger_name=TOOL_LOGGER_NAME, verbose=res.verbose, log_file_name=res.log_to_file)
+    setup_logger(logger_name=LoggerConstants.TOOL_LOGGER_NAME, verbose=res.verbose, log_file_name=res.log_to_file)
     github_api.main(input_, res.dry_run, res.commit_message)
+
+    shutdown_logging()
 
     return 0
 

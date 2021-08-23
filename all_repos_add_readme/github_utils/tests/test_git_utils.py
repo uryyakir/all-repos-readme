@@ -6,14 +6,6 @@ from all_repos_add_readme.github_utils.git_utils import GitConfigHandler
 from conftest import Constants
 
 
-github_config_handler = GitConfigHandler()
-
-
-@pytest.fixture
-def git_config_handler_object() -> GitConfigHandler:
-    return github_config_handler  # return a reference instead of reinitializing for every test function
-
-
 @pytest.mark.order1
 def test_getitem_does_not_exist(constants: Constants, git_config_handler_object: GitConfigHandler) -> None:
     with pytest.raises(NoSectionError):

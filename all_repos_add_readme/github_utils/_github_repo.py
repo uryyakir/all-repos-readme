@@ -8,11 +8,11 @@ import logging
 # local modules
 from all_repos_add_readme.constants import TOOL_DISCLAIMER_MD
 from all_repos_add_readme.constants import TOOL_NAME
-from all_repos_add_readme.constants import TOOL_LOGGER_NAME
+from all_repos_add_readme.constants import LoggerConstants
 from all_repos_add_readme.constants import TOOL_README_TEMPLATE_PATH
 
 
-logger = logging.getLogger(TOOL_LOGGER_NAME)
+logger = logging.getLogger(LoggerConstants.TOOL_LOGGER_NAME)
 
 
 class _Repo:
