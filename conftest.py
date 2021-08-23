@@ -20,7 +20,7 @@ def get_github_repository_object() -> Repository:
 
 
 @pytest.fixture
-def get_repo_object(get_github_repository_object) -> _Repo:
+def get_repo_object(get_github_repository_object: Repository) -> _Repo:
     return _Repo(get_github_repository_object)
 
 

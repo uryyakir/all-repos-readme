@@ -11,7 +11,7 @@ logger = logging.getLogger(TOOL_LOGGER_NAME)
 
 
 class RepoIgnore:
-    def __init__(self, path: str = '.repoignore', *, _test_patterns_lst: Tuple[str] = ()) -> None:
+    def __init__(self, path: str = '.repoignore', *, _test_patterns_lst: Tuple[str, ...] = ()) -> None:
         if _test_patterns_lst:
             # tuple of patterns given for testing purposes
             # overwrites .repoignore patterns
@@ -19,7 +19,7 @@ class RepoIgnore:
 
         else:
             with open(os.path.join(os.getcwd(), path), 'r', encoding='utf-8') as repoignore_file:
-                self._ignore_patterns = [pattern.strip() for pattern in repoignore_file.readlines()]
+                self._ignore_patterns = tuple((pattern.strip() for pattern in repoignore_file.readlines()))
 
     def should_ignore(self, repo: Repository.Repository) -> bool:
         for pattern in self._ignore_patterns:
