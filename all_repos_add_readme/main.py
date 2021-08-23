@@ -34,7 +34,7 @@ def _validate_markdown_input(res: Namespace) -> Optional[str]:
             return readme_file.read()
 
     elif res.readme_string:
-        logger.debug("user provided us with a custom markdown string, using that")
+        logger.debug("user provided a custom markdown string, using that")
         return res.readme_string[0]
 
     else:

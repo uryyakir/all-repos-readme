@@ -1,5 +1,6 @@
 from enum import Enum
 from time import time
+import os
 
 
 TOOL_NAME = "all_repos_readme"
@@ -12,6 +13,9 @@ TOOL_COMMIT_SIGNATURE = " (automatically committed by the `all_repos_readme` too
 TOOL_COMMIT_MESSAGE = "add README.md" + TOOL_COMMIT_SIGNATURE
 TOOL_DISCLAIMER_MD = """#### Disclaimer: this is an auto-generated README.md file, committed by the [{tool_name}](https://github.com/uryyakir/all-repos-readme) tool at {current_date}.
 To update repo stats, re-run the tool :)"""
+README_TEMPLATE_FILE_NAME = "readme_template.md"
+TOOL_README_TEMPLATE_PATH = os.path.join("all_repos_add_readme", README_TEMPLATE_FILE_NAME)
+# log constants
 TOOL_LOGGER_NAME = "logger"
 TOOL_DEFAULT_LOGFILE_DIR = "logs"
 TOOL_DEFAULT_LOGFILE_NAME = f"logfile_{round(time())}.log"

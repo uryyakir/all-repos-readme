@@ -9,6 +9,7 @@ import logging
 from all_repos_add_readme.constants import TOOL_DISCLAIMER_MD
 from all_repos_add_readme.constants import TOOL_NAME
 from all_repos_add_readme.constants import TOOL_LOGGER_NAME
+from all_repos_add_readme.constants import TOOL_README_TEMPLATE_PATH
 
 
 logger = logging.getLogger(TOOL_LOGGER_NAME)
@@ -64,7 +65,7 @@ class _Repo:
                 raise NotImplementedError()
 
         else:
-            with open("all_repos_add_readme/readme_template.md", 'r', encoding='utf-8') as readme_template_file:
+            with open(TOOL_README_TEMPLATE_PATH, 'r', encoding='utf-8') as readme_template_file:
                 formatted_readme = readme_template_file.read().format(
                     **self.__dict__
                 )

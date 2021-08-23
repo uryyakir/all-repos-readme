@@ -4,3 +4,5 @@ gitpython
 mypy
 flake8
 bs4
+pytest
+pytest-ordering

@@ -13,6 +13,7 @@ from all_repos_add_readme.constants import TOOL_COMMIT_MESSAGE
 from all_repos_add_readme.constants import TOOL_COMMIT_SIGNATURE
 from all_repos_add_readme.constants import TOOL_LOGGER_NAME
 from all_repos_add_readme.constants import LoggerColoring
+from all_repos_add_readme.constants import GithubConstants
 from all_repos_add_readme.github_utils._repo_ignore import RepoIgnore
 from all_repos_add_readme.github_utils._github_repo import _Repo
 from all_repos_add_readme.github_utils._github_config import _GithubConfig
@@ -100,7 +101,10 @@ class GitHubAPI:
 def main(user_input: Optional[str], dry_run: bool, commit_message: Optional[List[str]] = None) -> int:
     github_api = GitHubAPI(**locals())
     with open('config.json', encoding='utf8') as config_file:
-        github_config = _GithubConfig(**json.load(config_file))
+        _config_content = json.load(config_file)
+
+    assert GithubConstants.API_KEY.value in _config_content.keys()
+    github_config = _GithubConfig(**_config_content)
 
     github = Github(login_or_token=github_config.apiKey)
     for github_repo in set(github.get_user().get_repos(affiliation='owner')):
