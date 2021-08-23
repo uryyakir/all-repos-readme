@@ -1,6 +1,7 @@
 import pytest
 from github import Github
 from github.Repository import Repository
+from github.Commit import Commit
 import json
 from typing import Type
 import datetime as dt
@@ -24,6 +25,10 @@ def get_repo_object(get_github_repository_object: Repository) -> _Repo:
     return _Repo(get_github_repository_object)
 
 
+def get_last_commit(get_github_repository_object: Repository) -> Commit:
+    return list(get_github_repository_object.get_commits())[0]
+
+
 class Constants:
     # test_repo_ignore.py constants
     TEST_AGAINST_USERNAME = "uryyakir"
@@ -37,6 +42,10 @@ class Constants:
     TEST_PROPERTY_NAME = "testPropertyName"
     TEST_PROPERTY_VALUE = "test_property_value"
     TEST_PROPERTY_PATH = (TEST_SECTION_NAME, TEST_PROPERTY_NAME)
+    # test_github_api constants
+    TEST_CUSTOM_COMMIT_MESSAGE = "test commit message"
+    ONLY_TEST_AGAINST_REPO_FILTER = (rf"(?!.*({TEST_AGAINST_REPO_NAME}))",)
+    TEST_USER_INPUT = "some markdown string input"
 
 
 @pytest.fixture
