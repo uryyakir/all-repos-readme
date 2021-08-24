@@ -14,7 +14,7 @@ def main() -> int:
             with open(GithubConstants.GITHUB_CONFIG_FILE.value, mode='w', encoding='utf-8') as out_config_file:
                 json.dump(config_json, out_config_file, indent=2)
 
-            del git_config[GitConstants.API_KEY_CONFIG_PROPERTY.value]
+            del git_config[GitConstants.API_KEY_CONFIG_SECTION.value]
 
         except (NoOptionError, NoSectionError):  # key was not set in pre-commit hook, probably because api_key was already censored
             pass

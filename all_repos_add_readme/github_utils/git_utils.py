@@ -23,9 +23,11 @@ class GitConfigHandler(_Git):
         self._repo.config_writer(config_level=GitConstants.CONFIG_LEVEL.value).set_value(*key, value).release()
         return
 
-    def __delitem__(self, key: Tuple[str, str]) -> None:
-        self._repo.config_writer(config_level=GitConstants.CONFIG_LEVEL.value).remove_section(GitConstants.API_KEY_CONFIG_SECTION.value)
-        return
+    def __delitem__(self, key: str) -> bool:
+        _writer = self._repo.config_writer(config_level=GitConstants.CONFIG_LEVEL.value)
+        is_deleted = _writer.remove_section(key)
+        _writer.release()
+        return is_deleted
 
 
 git_config = GitConfigHandler()
