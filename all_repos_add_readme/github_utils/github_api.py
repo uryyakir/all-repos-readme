@@ -16,9 +16,11 @@ from all_repos_add_readme.constants import TOOL_COMMIT_SIGNATURE
 from all_repos_add_readme.constants import LoggerConstants
 from all_repos_add_readme.constants import LoggerColoring
 from all_repos_add_readme.constants import GithubConstants
+from all_repos_add_readme.constants import ToolArgumentNames
 from all_repos_add_readme.github_utils._repo_ignore import RepoIgnore
 from all_repos_add_readme.github_utils._github_repo import _Repo
 from all_repos_add_readme.github_utils._github_config import _GithubConfig
+from conftest import Constants
 
 
 logger = logging.getLogger(LoggerConstants.TOOL_LOGGER_NAME)
@@ -26,9 +28,9 @@ logger = logging.getLogger(LoggerConstants.TOOL_LOGGER_NAME)
 
 class GitHubAPI:
     def __init__(self, **kwargs: Any) -> None:
-        self._user_input = kwargs["user_input"]
-        self._dry_run = kwargs["dry_run"]
-        self._commit_message = kwargs["commit_message"][0] + TOOL_COMMIT_SIGNATURE if kwargs["commit_message"] else TOOL_COMMIT_MESSAGE
+        self._user_input = kwargs[ToolArgumentNames.USER_INPUT_ARGUMENT]
+        self._dry_run = kwargs[ToolArgumentNames.DRY_RUN_ARGUMENT]
+        self._commit_message = kwargs[ToolArgumentNames.COMMIT_MESSAGE_ARGUMENT][0] + TOOL_COMMIT_SIGNATURE if kwargs[ToolArgumentNames.COMMIT_MESSAGE_ARGUMENT] else TOOL_COMMIT_MESSAGE
         self._repo_ignore = RepoIgnore(**kwargs)
 
     def run_tool(self, github_repo: Repository) -> Optional[Dict[str, str]]:
@@ -132,4 +134,4 @@ def main(user_input: Optional[str], dry_run: bool, commit_message: Optional[List
 
 if __name__ == "__main__":
     # some random input for testing purposes
-    exit(main(None, dry_run=False, _test_patterns_lst=(r"(?!.*(all-repos-readme-testing))", )))
+    exit(main(None, dry_run=False, _test_patterns_lst=Constants.ONLY_TEST_AGAINST_REPO_FILTER))

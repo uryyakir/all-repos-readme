@@ -1,3 +1,4 @@
+from typing import Tuple
 from enum import Enum
 from time import time
 import os
@@ -16,6 +17,45 @@ TOOL_DISCLAIMER_MD = f"""#### Disclaimer: this is an auto-generated README.md fi
 To update repo stats, re-run the tool :)"""
 README_TEMPLATE_FILE_NAME = "readme_template.md"
 TOOL_README_TEMPLATE_PATH = os.path.join("all_repos_add_readme", README_TEMPLATE_FILE_NAME)
+
+
+class ToolArgumentNames:
+    README_FILE_ARGUMENT = "readme_file"
+    README_STRING_ARGUMENT = "readme_string"
+    USER_INPUT_ARGUMENT = "user_input"
+    VERBOSE_ARGUMENT = "verbose"
+    DRY_RUN_ARGUMENT = "dry_run"
+    COMMIT_MESSAGE_ARGUMENT = "commit_message"
+    LOG_TO_FILE_ARGUMENT = "log_to_file"
+
+    def __getattr__(self, item: str) -> str:
+        argument_name = (ToolArgumentNames.__dict__[item.upper() + "_ARGUMENT"]).replace("_", "-")
+        return argument_name
+
+    @staticmethod
+    def _gen_full_arg_name(_arg_name: str) -> str:
+        return "--" + _arg_name
+
+    @staticmethod
+    def _gen_abbrev_arg_name(_arg_name: str) -> str:
+        return "-" + "".join([word[0] for word in _arg_name.split("-")])
+
+    @staticmethod
+    def gen_argument_name(item: str, how: str) -> Tuple[str, ...]:
+        assert how in ('only full', 'only abbrev', 'both')
+        _arg_name = ToolArgumentNames().__getattr__(item)
+
+        if how == 'both':
+            return ToolArgumentNames._gen_full_arg_name(_arg_name), ToolArgumentNames._gen_abbrev_arg_name(_arg_name)
+
+        elif how == 'only full':
+            return (ToolArgumentNames._gen_full_arg_name(_arg_name),)
+
+        elif how == 'only abbrev':
+            return (ToolArgumentNames._gen_abbrev_arg_name(_arg_name),)
+
+        else:
+            raise NotImplementedError()
 
 
 class LoggerConstants:
