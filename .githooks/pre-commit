@@ -9,7 +9,7 @@ if [ $? -eq 1 ]; then
   # config file was changed so apiKey isn't exposed.
   # add those changes into the commit
   echo "re-adding config file"
-  git add config.json
+  git add all_repos_add_readme/config.json
 
 else
   echo "creds already censored :)"

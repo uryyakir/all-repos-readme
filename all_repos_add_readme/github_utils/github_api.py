@@ -20,7 +20,6 @@ from all_repos_add_readme.constants import ToolArgumentNames
 from all_repos_add_readme.github_utils._repo_ignore import RepoIgnore
 from all_repos_add_readme.github_utils._github_repo import _Repo
 from all_repos_add_readme.github_utils._github_config import _GithubConfig
-from conftest import Constants
 
 
 logger = logging.getLogger(LoggerConstants.TOOL_LOGGER_NAME)
@@ -134,4 +133,4 @@ def main(user_input: Optional[str], dry_run: bool, commit_message: Optional[List
 
 if __name__ == "__main__":
     # some random input for testing purposes
-    exit(main(None, dry_run=False, _test_patterns_lst=Constants.ONLY_TEST_AGAINST_REPO_FILTER))
+    exit(main(None, dry_run=True))

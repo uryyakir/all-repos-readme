@@ -9,8 +9,8 @@ jobs:
   main:
     strategy:
       matrix:
-        python-version: ['3.6', '3.7', '3.8']
-        os: [windows-latest, ubuntu-latest]
+        python-version: ['3.7']
+        os: [ubuntu-latest]
 
     runs-on: ${{ matrix.os }}
     steps:
@@ -19,6 +19,8 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - name: install tox
-      run: python -m pip install --upgrade tox virtualenv setuptools pip
+      run: python -m pip install --upgrade coverage tox virtualenv setuptools pip
+    - name: inject github api key
+      run: GITHUB_API_KEY=${{ secrets.MY_API_KEY }} python ".github/scripts/migrate_secrets.py"
     - name: run tox
       run: tox -e py
