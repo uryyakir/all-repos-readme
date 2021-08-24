@@ -38,6 +38,6 @@ def setup_logger(logger_name: str, verbose: bool, log_file_name: Optional[str], 
 
 def shutdown_logging() -> None:
     logger = logging.getLogger(LoggerConstants.TOOL_LOGGER_NAME)
-    _ = map(lambda handler: logger.removeHandler(handler), logger.handlers)  # noqa: F821
-    del logger  # noqa: F821
-    logging.shutdown()
+    for handler in logger.handlers[:]:
+        handler.close()
+        logger.removeHandler(handler)
