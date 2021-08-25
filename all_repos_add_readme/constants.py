@@ -78,7 +78,7 @@ class LoggerConstants:
 class GithubConstants(Enum):
     API_KEY = "apiKey"
     USERNAME = "username"
-    GITHUB_CONFIG_FILE = os.path.join(BASE_DIR, "config.json")
+    GITHUB_CONFIG_FILE = os.path.join(os.getcwd(), "config.json")
 
 
 class GitConstants(Enum):
