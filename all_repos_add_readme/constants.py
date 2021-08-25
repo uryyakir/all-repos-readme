@@ -2,6 +2,7 @@ from typing import Tuple
 from enum import Enum
 from time import time
 import os
+import colorama
 
 
 TOOL_NAME = "all_repos_readme"
@@ -88,5 +89,6 @@ class GitConstants(Enum):
 
 
 class LoggerColoring(Enum):
-    GREEN = "\x1b[32m"
-    RESET_SEQ = "\033[0m"
+    colorama.init()
+    GREEN = colorama.Fore.GREEN
+    RESET_SEQ = colorama.Style.RESET_ALL
