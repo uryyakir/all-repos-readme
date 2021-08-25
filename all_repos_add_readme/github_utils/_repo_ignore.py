@@ -6,14 +6,14 @@ from typing import Tuple
 from typing import Any
 # local modules
 from all_repos_add_readme.constants import LoggerConstants
-from all_repos_add_readme.constants import PACKAGE_DIR
+from all_repos_add_readme.constants import BASE_DIR
 
 
 logger = logging.getLogger(LoggerConstants.TOOL_LOGGER_NAME)
 
 
 class RepoIgnore:
-    def __init__(self, path: str = os.path.join(PACKAGE_DIR, '.repoignore'), *, _test_patterns_lst: Tuple[str, ...] = (), **_: Any) -> None:
+    def __init__(self, path: str = os.path.join(BASE_DIR, '.repoignore'), *, _test_patterns_lst: Tuple[str, ...] = (), **_: Any) -> None:
         if _test_patterns_lst:
             # tuple of patterns given for testing purposes
             # overwrites .repoignore patterns

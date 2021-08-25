@@ -20,7 +20,7 @@ README_TEMPLATE_FILE_NAME = "readme_template.md"
 PACKAGE_DIR, _ = os.path.split(__file__)
 BASE_DIR = os.path.abspath(os.path.join(PACKAGE_DIR, os.pardir))
 TOOL_README_TEMPLATE_PATH = os.path.join(PACKAGE_DIR, README_TEMPLATE_FILE_NAME)
-DATA_FILES = [".repoignore", "config.json", "requirements.txt"]
+DATA_FILES = []
 
 
 class ToolArgumentNames:
@@ -64,7 +64,7 @@ class ToolArgumentNames:
 class LoggerConstants:
     # log constants
     TOOL_LOGGER_NAME = "logger"
-    TOOL_DEFAULT_LOGFILE_DIR = os.path.join(PACKAGE_DIR, "logs")
+    TOOL_DEFAULT_LOGFILE_DIR = os.path.join(BASE_DIR, "logs")
     if not os.path.isdir(TOOL_DEFAULT_LOGFILE_DIR):  # pragma: no cover
         os.mkdir(TOOL_DEFAULT_LOGFILE_DIR)
 
