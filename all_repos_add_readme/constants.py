@@ -16,8 +16,11 @@ TOOL_COMMIT_MESSAGE = "add README.md" + TOOL_COMMIT_SIGNATURE
 TOOL_DISCLAIMER_MD = f"""#### Disclaimer: this is an auto-generated README.md file, committed by the [{{tool_name}}]({TOOL_GITHUB_REPO_URL}) tool at {{current_date}}.
 To update repo stats, re-run the tool :)"""
 README_TEMPLATE_FILE_NAME = "readme_template.md"
+# directory-related and relative file paths constants
 PACKAGE_DIR, _ = os.path.split(__file__)
+BASE_DIR = os.path.abspath(os.path.join(PACKAGE_DIR, os.pardir))
 TOOL_README_TEMPLATE_PATH = os.path.join(PACKAGE_DIR, README_TEMPLATE_FILE_NAME)
+DATA_FILES = [".repoignore", "config.json", "requirements.txt"]
 
 
 class ToolArgumentNames:
@@ -75,7 +78,7 @@ class LoggerConstants:
 class GithubConstants(Enum):
     API_KEY = "apiKey"
     USERNAME = "username"
-    GITHUB_CONFIG_FILE = os.path.join(PACKAGE_DIR, "config.json")
+    GITHUB_CONFIG_FILE = os.path.join(BASE_DIR, "config.json")
 
 
 class GitConstants(Enum):
