@@ -43,7 +43,7 @@ class ToolArgumentNames:
 
     @staticmethod
     def gen_argument_name(item: str, how: str) -> Tuple[str, ...]:
-        assert how in ('only full', 'only abbrev', 'both')
+        _allowed_how_values = ('both', 'only full', 'only abbrev')
         _arg_name = ToolArgumentNames().__getattr__(item)
 
         if how == 'both':
@@ -55,15 +55,14 @@ class ToolArgumentNames:
         elif how == 'only abbrev':
             return (ToolArgumentNames._gen_abbrev_arg_name(_arg_name),)
 
-        else:
-            raise NotImplementedError()
+        raise ValueError(f"Unsupported value. `how` value must be one of the following {_allowed_how_values}")
 
 
 class LoggerConstants:
     # log constants
     TOOL_LOGGER_NAME = "logger"
     TOOL_DEFAULT_LOGFILE_DIR = os.path.join(PACKAGE_DIR, "logs")
-    if not os.path.isdir(TOOL_DEFAULT_LOGFILE_DIR):
+    if not os.path.isdir(TOOL_DEFAULT_LOGFILE_DIR):  # pragma: no cover
         os.mkdir(TOOL_DEFAULT_LOGFILE_DIR)
 
     ROTATING_FILE_HANDLER_BACKUP_COUNT = 5

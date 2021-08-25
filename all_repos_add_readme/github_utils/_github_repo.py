@@ -1,6 +1,7 @@
 from typing import List
 from typing import Dict
 from typing import Optional
+from typing import Union
 from github import Repository
 import datetime as dt
 from bs4 import BeautifulSoup as Soup
@@ -27,7 +28,7 @@ class _Repo:
         self.updated_at = repo.updated_at
         self.total_commits = repo.get_commits().totalCount
         self.total_contributors = repo.get_contributors().totalCount
-        self._used_languages = [
+        self._used_languages: List[Dict[str, Union[float, str]]] = [
             {
                 "language": language,
                 "percentage": round(
@@ -40,7 +41,7 @@ class _Repo:
         logger.debug("finished extracting repo attributes")
 
     @property
-    def used_languages(self) -> List[Dict[str, float]]:
+    def used_languages(self) -> List[Dict[str, Union[float, str]]]:
         return sorted(self._used_languages, key=lambda dict_: dict_["percentage"], reverse=True)
 
     def _inject_used_languages(self, formatted_readme: str) -> Soup:

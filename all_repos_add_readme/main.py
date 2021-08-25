@@ -25,10 +25,6 @@ def _validate_markdown_input(res: Namespace) -> Optional[str]:
     if all([res.readme_file, res.readme_string]):
         raise InvalidReadme(message=ExceptionMessages.BOTH_STDIN_AND_FILE.value)
 
-    elif not any([res.readme_file, res.readme_string]):
-        logger.debug("readme-file and readme-string params are both not provided, resort to generating automated README.md file using template")
-        return None
-
     elif res.readme_file:
         with open(os.path.join(os.getcwd(), res.readme_file[0])) as readme_file:
             logger.debug("found readme-file in provided path")
@@ -38,9 +34,8 @@ def _validate_markdown_input(res: Namespace) -> Optional[str]:
         logger.debug("user provided a custom markdown string, using that")
         return res.readme_string[0]
 
-    else:
-        logger.debug(f"invalid user input: {res}")
-        raise NotImplementedError("invalid user input!")
+    logger.debug("readme-file and readme-string params are both not provided, resort to generating automated README.md file using template")
+    return None
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
@@ -63,6 +58,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 
 
 if __name__ == "__main__":
+    pass
     # exit(main(['-rs', """
     # # some string
     # ## some other string
@@ -71,5 +67,7 @@ if __name__ == "__main__":
     #     <li>item12</li>
     # </ul>
     # """, "--dry-run"]))
-    exit(main(["--dry-run", "-v"]))
+
+    # exit(main(["--dry-run", "-v"]))
+
     # exit(main(['--readme-file', 'generic.md']))

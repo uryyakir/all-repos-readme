@@ -4,6 +4,7 @@ from typing import Any
 from typing import Dict
 from github import Github
 from github.Repository import Repository
+from github.ContentFile import ContentFile
 from github.GithubException import UnknownObjectException
 import json
 import sys
@@ -39,6 +40,7 @@ class GitHubAPI:
                 readme_file = github_repo.get_contents(
                     github_repo.get_readme().path
                 )
+                assert isinstance(readme_file, ContentFile)
                 readme_content = readme_file.decoded_content.decode()
 
                 if TOOL_NAME in readme_content:
@@ -56,14 +58,11 @@ class GitHubAPI:
 
         elif _should_ignore:
             logger.info(f"skipping {github_repo.full_name}: found in .repoignore")
-            return None
 
         elif github_repo.fork:
             logger.debug(f"skipping {github_repo.full_name}: it's a fork")
-            return None
 
-        else:
-            raise NotImplementedError()
+        return None
 
     def _run_tool(self, github_repo: Repository, exception: UnknownObjectException) -> Optional[Dict[str, str]]:
         logger.info(f"creating README.md for {github_repo.full_name}")
@@ -129,8 +128,3 @@ def main(user_input: Optional[str], dry_run: bool, commit_message: Optional[List
 
     print(json.dumps(changes_dict), file=sys.stderr)  # for testing purposes
     return 0
-
-
-if __name__ == "__main__":
-    # some random input for testing purposes
-    exit(main(None, dry_run=True))

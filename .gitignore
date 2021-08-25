@@ -2,5 +2,6 @@
 __pycache__/
 logs/
 .tox/
-coverage
 *.egg-info
+.coverage
+htmlcov/

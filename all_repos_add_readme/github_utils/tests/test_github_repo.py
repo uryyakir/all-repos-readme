@@ -1,4 +1,5 @@
 import os
+import pytest
 # local modules
 from conftest import Constants
 from all_repos_add_readme.github_utils._github_repo import _Repo
@@ -28,3 +29,8 @@ def test_generate_readme_string(get_repo_object: _Repo, constants: Constants) ->
 
     for version in (_none_readme_string, _string_input, _file_input):
         assert TOOL_NAME in version and constants.TOOL_SIGNATURE_STRING in version
+
+
+def test_generate_readme_string_invalid_input(get_repo_object: _Repo) -> None:
+    with pytest.raises(NotImplementedError):
+        _ = get_repo_object.generate_readme_string(['a', 'b'])  # type: ignore
