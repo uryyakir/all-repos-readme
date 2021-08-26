@@ -1,4 +1,2 @@
-include all_repos_add_readme/.repoignore
-include all_repos_add_readme/config.json
 include all_repos_add_readme/readme_template.md
 include all_repos_add_readme/requirements.txt

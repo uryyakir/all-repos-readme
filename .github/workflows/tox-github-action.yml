@@ -19,7 +19,7 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - name: install tox
-      run: python -m pip install --upgrade coverage tox virtualenv setuptools pip
+      run: python -m pip install --upgrade coverage tox virtualenv setuptools pip colorama
     - name: inject github api key
       run: GITHUB_API_KEY=${{ secrets.MY_API_KEY }} python ".github/scripts/migrate_secrets.py"
     - name: run tox
