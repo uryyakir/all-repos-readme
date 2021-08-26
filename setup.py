@@ -7,6 +7,7 @@ from all_repos_add_readme.constants import BASE_DIR
 from all_repos_add_readme.constants import PACKAGE_DIR
 from all_repos_add_readme.constants import DATA_FILES
 
+
 def copy_data_files() -> None:
     # this function allows adding data files from root directory to package
     # when package is pip installed, those files will be present in package's folder in site-packages
