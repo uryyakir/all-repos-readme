@@ -90,6 +90,17 @@ from all_repos_add_readme.constants import ToolArgumentNames
         {
             "argv": [
                 *ToolArgumentNames.gen_argument_name(ToolArgumentNames.README_FILE_ARGUMENT, how='only full'),
+                Constants.TEST_MARKDOWN_FILE_PATH,
+                *ToolArgumentNames.gen_argument_name(ToolArgumentNames.LOG_TO_FILE_ARGUMENT, how='only full'),
+                Constants.CUSTOM_LOGFILE_NAME,
+                *ToolArgumentNames.gen_argument_name(ToolArgumentNames.COMMIT_MESSAGE_ARGUMENT, how='only full'),
+                Constants.TEST_CUSTOM_COMMIT_MESSAGE,
+                *ToolArgumentNames.gen_argument_name(ToolArgumentNames.VERBOSE_ARGUMENT, how='only abbrev')
+            ]
+        },
+        {
+            "argv": [
+                *ToolArgumentNames.gen_argument_name(ToolArgumentNames.README_FILE_ARGUMENT, how='only full'),
                 os.path.join("..", Constants.TEST_MARKDOWN_FILE_PATH),
                 *ToolArgumentNames.gen_argument_name(ToolArgumentNames.LOG_TO_FILE_ARGUMENT, how='only full'),
                 Constants.CUSTOM_LOGFILE_NAME,
@@ -101,7 +112,7 @@ from all_repos_add_readme.constants import ToolArgumentNames
                 *ToolArgumentNames.gen_argument_name(ToolArgumentNames.REPOIGNORE_FILENAME_ARGUMENT, how='only full'),
                 "../.repoignore"
             ],
-            "cd_dir": "venv/"
+            "cd_dir": "all_repos_add_readme/"
         }
     )
 )
