@@ -33,6 +33,8 @@ class ToolArgumentNames:
     DRY_RUN_ARGUMENT = "dry_run"
     COMMIT_MESSAGE_ARGUMENT = "commit_message"
     LOG_TO_FILE_ARGUMENT = "log_to_file"
+    CONFIG_FILENAME_ARGUMENT = "config_filename"
+    REPOIGNORE_FILENAME_ARGUMENT = "repoignore_filename"
 
     def __getattr__(self, item: str) -> str:
         argument_name = (ToolArgumentNames.__dict__[item.upper() + "_ARGUMENT"]).replace("_", "-")
@@ -81,6 +83,7 @@ class GithubConstants(Enum):
     API_KEY = "apiKey"
     USERNAME = "username"
     GITHUB_CONFIG_FILE = os.path.join(os.getcwd(), "config.json")
+    REPOIGNORE_FILE = os.path.join(os.getcwd(), '.repoignore')
 
 
 class GitConstants(Enum):

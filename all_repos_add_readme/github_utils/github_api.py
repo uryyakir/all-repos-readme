@@ -1,5 +1,4 @@
 from typing import Optional
-from typing import List
 from typing import Any
 from typing import Dict
 from github import Github
@@ -30,7 +29,7 @@ class GitHubAPI:
     def __init__(self, **kwargs: Any) -> None:
         self._user_input = kwargs[ToolArgumentNames.USER_INPUT_ARGUMENT]
         self._dry_run = kwargs[ToolArgumentNames.DRY_RUN_ARGUMENT]
-        self._commit_message = kwargs[ToolArgumentNames.COMMIT_MESSAGE_ARGUMENT][0] + TOOL_COMMIT_SIGNATURE if kwargs[ToolArgumentNames.COMMIT_MESSAGE_ARGUMENT] else TOOL_COMMIT_MESSAGE
+        self._commit_message = kwargs[ToolArgumentNames.COMMIT_MESSAGE_ARGUMENT] + TOOL_COMMIT_SIGNATURE if kwargs[ToolArgumentNames.COMMIT_MESSAGE_ARGUMENT] else TOOL_COMMIT_MESSAGE
         self._repo_ignore = RepoIgnore(**kwargs)
 
     def run_tool(self, github_repo: Repository) -> Optional[Dict[str, str]]:
@@ -109,10 +108,19 @@ class GitHubAPI:
                 return None
 
 
-def main(user_input: Optional[str], dry_run: bool, commit_message: Optional[List[str]] = None, **kwargs: Any) -> int:
+def main(
+        user_input: Optional[str],
+        dry_run: bool,
+        commit_message: Optional[str] = None,
+        config_filename: Optional[str] = None,
+        repoignore_filename: Optional[str] = None,
+        **kwargs: Any) -> int:
     changes_dict = {}
     github_api = GitHubAPI(**{**locals(), **kwargs})
-    with open(GithubConstants.GITHUB_CONFIG_FILE.value, encoding='utf8') as config_file:
+    with open(
+            config_filename if config_filename else GithubConstants.GITHUB_CONFIG_FILE.value,
+            encoding='utf8'
+    ) as config_file:
         _config_content = json.load(config_file)
 
     assert GithubConstants.API_KEY.value in _config_content.keys()

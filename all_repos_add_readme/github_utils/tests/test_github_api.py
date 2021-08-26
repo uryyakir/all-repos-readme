@@ -34,7 +34,7 @@ def test_tool_dry_run(capsys: CaptureFixture[AnyStr], constants: Constants) -> N
 
 
 def test_tool_custom_commit_message(capsys: CaptureFixture[AnyStr], get_github_repository_object: Repository, constants: Constants) -> None:
-    exit_code = github_api.main(user_input=None, dry_run=False, commit_message=[constants.TEST_CUSTOM_COMMIT_MESSAGE], _test_patterns_lst=constants.ONLY_TEST_AGAINST_REPO_FILTER)
+    exit_code = github_api.main(user_input=None, dry_run=False, commit_message=constants.TEST_CUSTOM_COMMIT_MESSAGE, _test_patterns_lst=constants.ONLY_TEST_AGAINST_REPO_FILTER)
     _ = _assert_expected_exit_code(capsys, exit_code, 1)
 
     assert get_last_commit(get_github_repository_object).commit.message.startswith(constants.TEST_CUSTOM_COMMIT_MESSAGE) and \
