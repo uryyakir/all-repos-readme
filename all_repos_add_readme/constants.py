@@ -1,4 +1,5 @@
 from typing import Tuple
+from typing import List
 from enum import Enum
 from time import time
 import os
@@ -21,7 +22,7 @@ README_TEMPLATE_FILE_NAME = "readme_template.md"
 PACKAGE_DIR, _ = os.path.split(__file__)
 BASE_DIR = os.path.abspath(os.path.join(PACKAGE_DIR, os.pardir))
 TOOL_README_TEMPLATE_PATH = os.path.join(PACKAGE_DIR, README_TEMPLATE_FILE_NAME)
-DATA_FILES = []
+DATA_FILES: List[str] = []
 
 
 class ToolArgumentNames:
