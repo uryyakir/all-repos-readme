@@ -14,7 +14,7 @@ def copy_data_files() -> None:
 
 
 def generate_install_requires() -> List[str]:
-    with open(os.path.join(os.getcwd(), "all_repos_add_readme/requirements.txt"), 'r') as reqs_file:
+    with open(os.path.join(os.getcwd(), "requirements-dev.txt"), 'r') as reqs_file:
         _install_requires = reqs_file.read().split("\n")
 
     return _install_requires

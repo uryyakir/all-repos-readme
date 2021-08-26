@@ -1,2 +1,2 @@
 include all_repos_add_readme/readme_template.md
-include all_repos_add_readme/requirements.txt
+include requirements-dev.txt
