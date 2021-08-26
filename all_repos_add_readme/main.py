@@ -26,16 +26,24 @@ def _validate_markdown_input(res: Namespace) -> Optional[str]:
         raise InvalidReadme(message=ExceptionMessages.BOTH_STDIN_AND_FILE.value)
 
     elif res.readme_file:
-        with open(os.path.join(os.getcwd(), res.readme_file[0])) as readme_file:
+        with open(os.path.join(os.getcwd(), res.readme_file)) as readme_file:
             logger.debug("found readme-file in provided path")
             return readme_file.read()
 
     elif res.readme_string:
         logger.debug("user provided a custom markdown string, using that")
-        return res.readme_string[0]
+        return res.readme_string
 
     logger.debug("readme-file and readme-string params are both not provided, resort to generating automated README.md file using template")
     return None
+
+
+def unpack_arguments(res: Namespace) -> Namespace:
+    for arg_name, arg_value in res.__dict__.items():
+        if isinstance(arg_value, list) and len(arg_value) == 1:
+            res.__setattr__(arg_name, arg_value[0])
+
+    return res
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
@@ -46,11 +54,14 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     parser.add_argument(*ToolArgumentNames.gen_argument_name(ToolArgumentNames.DRY_RUN_ARGUMENT, how='only full'), action='store_true', help='prevents tool from actually making commits to user\'s repo, but preforms the same workflow')
     parser.add_argument(*ToolArgumentNames.gen_argument_name(ToolArgumentNames.COMMIT_MESSAGE_ARGUMENT, how='only full'), nargs=1, help=f'provide a custom commit message for the creation or update of the README.md file.\nDefault: "{TOOL_COMMIT_MESSAGE}"')
     parser.add_argument(*ToolArgumentNames.gen_argument_name(ToolArgumentNames.LOG_TO_FILE_ARGUMENT, how='only full'), nargs='?', help='output tool logs to file', const=LoggerConstants().tool_default_logfile_name)
+    parser.add_argument(*ToolArgumentNames.gen_argument_name(ToolArgumentNames.CONFIG_FILENAME_ARGUMENT, how='only full'), nargs=1, help='path to config.json file that includes GitHub\'s api key')
+    parser.add_argument(*ToolArgumentNames.gen_argument_name(ToolArgumentNames.REPOIGNORE_FILENAME_ARGUMENT, how='only full'), nargs=1, help='path to .repoignore file')
     res = parser.parse_args(argv)
 
+    res = unpack_arguments(res)
     input_ = _validate_markdown_input(res)
     setup_logger(logger_name=LoggerConstants.TOOL_LOGGER_NAME, verbose=res.verbose, log_file_name=res.log_to_file)
-    github_api.main(input_, res.dry_run, res.commit_message)
+    github_api.main(input_, res.dry_run, res.commit_message, res.config_filename, res.repoignore_filename)
 
     shutdown_logging()
 
