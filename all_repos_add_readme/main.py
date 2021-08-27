@@ -27,14 +27,14 @@ def _validate_markdown_input(res: Namespace) -> Optional[str]:
 
     elif res.readme_file:
         with open(os.path.join(os.getcwd(), res.readme_file)) as readme_file:
-            logger.debug("found readme-file in provided path")
+            logger.debug('found readme-file in provided path')
             return readme_file.read()
 
     elif res.readme_string:
-        logger.debug("user provided a custom markdown string, using that")
+        logger.debug('user provided a custom markdown string, using that')
         return res.readme_string
 
-    logger.debug("readme-file and readme-string params are both not provided, resort to generating automated README.md file using template")
+    logger.debug('readme-file and readme-string params are both not provided, resort to generating automated README.md file using template')
     return None
 
 
@@ -68,7 +68,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     return 0
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     pass
     # exit(main(['-rs', """
     # # some string

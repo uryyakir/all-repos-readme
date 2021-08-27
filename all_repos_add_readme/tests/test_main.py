@@ -13,108 +13,108 @@ from all_repos_add_readme.constants import ToolArgumentNames
     'kwargs',
     (
         {
-            "argv": [
+            'argv': [
                 *ToolArgumentNames.gen_argument_name(ToolArgumentNames.README_STRING_ARGUMENT, how='only abbrev'),
-                Constants.CUSTOM_README_STRING
-            ]
+                Constants.CUSTOM_README_STRING,
+            ],
         },
         {
-            "argv": [
-                *ToolArgumentNames.gen_argument_name(ToolArgumentNames.README_STRING_ARGUMENT, how='only full'),
-                Constants.CUSTOM_README_STRING
-            ]
-        },
-        {
-            "argv": [
-                *ToolArgumentNames.gen_argument_name(ToolArgumentNames.README_FILE_ARGUMENT, how='only full'),
-                Constants.TEST_MARKDOWN_FILE_PATH
-            ]
-        },
-        {
-            "argv": [
-                *ToolArgumentNames.gen_argument_name(ToolArgumentNames.VERBOSE_ARGUMENT, how='only full')
-            ]
-        },
-        {
-            "argv": [
-                *ToolArgumentNames.gen_argument_name(ToolArgumentNames.VERBOSE_ARGUMENT, how='only full')
-            ]
-        },
-        {
-            "argv": [
+            'argv': [
                 *ToolArgumentNames.gen_argument_name(ToolArgumentNames.README_STRING_ARGUMENT, how='only full'),
                 Constants.CUSTOM_README_STRING,
-                *ToolArgumentNames.gen_argument_name(ToolArgumentNames.VERBOSE_ARGUMENT, how='only abbrev')
-            ]
+            ],
         },
         {
-            "argv": [
-                *ToolArgumentNames.gen_argument_name(ToolArgumentNames.README_STRING_ARGUMENT, how='only full'),
-                Constants.CUSTOM_README_STRING,
-                *ToolArgumentNames.gen_argument_name(ToolArgumentNames.COMMIT_MESSAGE_ARGUMENT, how='only full'),
-                Constants.TEST_CUSTOM_COMMIT_MESSAGE
-            ]
-        },
-        {
-            "argv": [
-                *ToolArgumentNames.gen_argument_name(ToolArgumentNames.LOG_TO_FILE_ARGUMENT, how='only full')
-            ]
-        },
-        {
-            "argv": [
-                *ToolArgumentNames.gen_argument_name(ToolArgumentNames.LOG_TO_FILE_ARGUMENT, how='only full'),
-                Constants.CUSTOM_LOGFILE_NAME
-            ]
-        },
-        {
-            "argv": [
+            'argv': [
                 *ToolArgumentNames.gen_argument_name(ToolArgumentNames.README_FILE_ARGUMENT, how='only full'),
                 Constants.TEST_MARKDOWN_FILE_PATH,
-                *ToolArgumentNames.gen_argument_name(ToolArgumentNames.LOG_TO_FILE_ARGUMENT, how='only full'),
-                Constants.CUSTOM_LOGFILE_NAME,
-                *ToolArgumentNames.gen_argument_name(ToolArgumentNames.COMMIT_MESSAGE_ARGUMENT, how='only full'),
-                Constants.TEST_CUSTOM_COMMIT_MESSAGE
-            ]
+            ],
         },
         {
-            "argv": [
+            'argv': [
+                *ToolArgumentNames.gen_argument_name(ToolArgumentNames.VERBOSE_ARGUMENT, how='only full'),
+            ],
+        },
+        {
+            'argv': [
+                *ToolArgumentNames.gen_argument_name(ToolArgumentNames.VERBOSE_ARGUMENT, how='only full'),
+            ],
+        },
+        {
+            'argv': [
+                *ToolArgumentNames.gen_argument_name(ToolArgumentNames.README_STRING_ARGUMENT, how='only full'),
+                Constants.CUSTOM_README_STRING,
+                *ToolArgumentNames.gen_argument_name(ToolArgumentNames.VERBOSE_ARGUMENT, how='only abbrev'),
+            ],
+        },
+        {
+            'argv': [
+                *ToolArgumentNames.gen_argument_name(ToolArgumentNames.README_STRING_ARGUMENT, how='only full'),
+                Constants.CUSTOM_README_STRING,
+                *ToolArgumentNames.gen_argument_name(ToolArgumentNames.COMMIT_MESSAGE_ARGUMENT, how='only full'),
+                Constants.TEST_CUSTOM_COMMIT_MESSAGE,
+            ],
+        },
+        {
+            'argv': [
+                *ToolArgumentNames.gen_argument_name(ToolArgumentNames.LOG_TO_FILE_ARGUMENT, how='only full'),
+            ],
+        },
+        {
+            'argv': [
+                *ToolArgumentNames.gen_argument_name(ToolArgumentNames.LOG_TO_FILE_ARGUMENT, how='only full'),
+                Constants.CUSTOM_LOGFILE_NAME,
+            ],
+        },
+        {
+            'argv': [
                 *ToolArgumentNames.gen_argument_name(ToolArgumentNames.README_FILE_ARGUMENT, how='only full'),
                 Constants.TEST_MARKDOWN_FILE_PATH,
                 *ToolArgumentNames.gen_argument_name(ToolArgumentNames.LOG_TO_FILE_ARGUMENT, how='only full'),
                 Constants.CUSTOM_LOGFILE_NAME,
                 *ToolArgumentNames.gen_argument_name(ToolArgumentNames.COMMIT_MESSAGE_ARGUMENT, how='only full'),
                 Constants.TEST_CUSTOM_COMMIT_MESSAGE,
-                *ToolArgumentNames.gen_argument_name(ToolArgumentNames.VERBOSE_ARGUMENT, how='only abbrev')
-            ]
+            ],
         },
         {
-            "argv": [
+            'argv': [
                 *ToolArgumentNames.gen_argument_name(ToolArgumentNames.README_FILE_ARGUMENT, how='only full'),
                 Constants.TEST_MARKDOWN_FILE_PATH,
                 *ToolArgumentNames.gen_argument_name(ToolArgumentNames.LOG_TO_FILE_ARGUMENT, how='only full'),
                 Constants.CUSTOM_LOGFILE_NAME,
                 *ToolArgumentNames.gen_argument_name(ToolArgumentNames.COMMIT_MESSAGE_ARGUMENT, how='only full'),
                 Constants.TEST_CUSTOM_COMMIT_MESSAGE,
-                *ToolArgumentNames.gen_argument_name(ToolArgumentNames.VERBOSE_ARGUMENT, how='only abbrev')
-            ]
+                *ToolArgumentNames.gen_argument_name(ToolArgumentNames.VERBOSE_ARGUMENT, how='only abbrev'),
+            ],
         },
         {
-            "argv": [
+            'argv': [
                 *ToolArgumentNames.gen_argument_name(ToolArgumentNames.README_FILE_ARGUMENT, how='only full'),
-                os.path.join("..", Constants.TEST_MARKDOWN_FILE_PATH),
+                Constants.TEST_MARKDOWN_FILE_PATH,
+                *ToolArgumentNames.gen_argument_name(ToolArgumentNames.LOG_TO_FILE_ARGUMENT, how='only full'),
+                Constants.CUSTOM_LOGFILE_NAME,
+                *ToolArgumentNames.gen_argument_name(ToolArgumentNames.COMMIT_MESSAGE_ARGUMENT, how='only full'),
+                Constants.TEST_CUSTOM_COMMIT_MESSAGE,
+                *ToolArgumentNames.gen_argument_name(ToolArgumentNames.VERBOSE_ARGUMENT, how='only abbrev'),
+            ],
+        },
+        {
+            'argv': [
+                *ToolArgumentNames.gen_argument_name(ToolArgumentNames.README_FILE_ARGUMENT, how='only full'),
+                os.path.join('..', Constants.TEST_MARKDOWN_FILE_PATH),
                 *ToolArgumentNames.gen_argument_name(ToolArgumentNames.LOG_TO_FILE_ARGUMENT, how='only full'),
                 Constants.CUSTOM_LOGFILE_NAME,
                 *ToolArgumentNames.gen_argument_name(ToolArgumentNames.COMMIT_MESSAGE_ARGUMENT, how='only full'),
                 Constants.TEST_CUSTOM_COMMIT_MESSAGE,
                 *ToolArgumentNames.gen_argument_name(ToolArgumentNames.VERBOSE_ARGUMENT, how='only abbrev'),
                 *ToolArgumentNames.gen_argument_name(ToolArgumentNames.CONFIG_FILENAME_ARGUMENT, how='only full'),
-                "../config.json",
+                '../config.json',
                 *ToolArgumentNames.gen_argument_name(ToolArgumentNames.REPOIGNORE_FILENAME_ARGUMENT, how='only full'),
-                "../.repoignore"
+                '../.repoignore',
             ],
-            "cd_dir": "all_repos_add_readme/"
-        }
-    )
+            'cd_dir': 'all_repos_add_readme/',
+        },
+    ),
 )
 def test_supported_cli_args(kwargs: Dict[str, Any]) -> None:
     # argv: List[str], cd_dir: os.PathLike = None
@@ -140,5 +140,5 @@ def test_both_options_provided_exception() -> None:
             Constants.CUSTOM_README_STRING,
             *ToolArgumentNames.gen_argument_name(ToolArgumentNames.README_FILE_ARGUMENT, how='only full'),
             Constants.TEST_MARKDOWN_FILE_PATH,
-            *ToolArgumentNames.gen_argument_name(ToolArgumentNames.DRY_RUN_ARGUMENT, how='only full')
+            *ToolArgumentNames.gen_argument_name(ToolArgumentNames.DRY_RUN_ARGUMENT, how='only full'),
         ])

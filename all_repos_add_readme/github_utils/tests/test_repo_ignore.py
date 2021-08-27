@@ -11,9 +11,9 @@ from all_repos_add_readme.github_utils._repo_ignore import RepoIgnore
         (r'.*', True),
         (Constants.TEST_AGAINST_REPO_NAME, True),
         (r'\w+', True),
-        (Constants.TEST_AGAINST_USERNAME + "/" + Constants.TEST_AGAINST_REPO_NAME, True),
-        ("other_random_repo", False)
-    ]
+        (Constants.TEST_AGAINST_USERNAME + '/' + Constants.TEST_AGAINST_REPO_NAME, True),
+        ('other_random_repo', False),
+    ],
 )
 def test_repo_ignore(get_github_repository_object: Repository, expression: str, should_filter: bool) -> None:
     _repo_ignore = RepoIgnore(_test_patterns_lst=(expression,))

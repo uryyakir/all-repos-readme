@@ -1,10 +1,10 @@
-PyGithub
-requests
+bs4
+colorama
+coverage
+flake8
 gitpython
 mypy
-flake8
-bs4
+PyGithub
 pytest
 pytest-ordering
-coverage
-colorama
+requests

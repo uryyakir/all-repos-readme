@@ -20,10 +20,10 @@ def test_logger_auto_generated_namings(constants: Constants) -> None:
         assert len(
             set(
                 map(
-                    lambda text: re.search(r"\d+", text).group(0),  # type: ignore
-                    os.listdir(tmpdir)
-                )
-            )
+                    lambda text: re.search(r'\d+', text).group(0),  # type: ignore
+                    os.listdir(tmpdir),
+                ),
+            ),
         ) == constants.LOGFILES_ITERATION_COUNTER  # check total unique timestamps
 
         shutdown_logging()
@@ -37,7 +37,7 @@ def test_logger_custom_log_namings(constants: Constants) -> None:
             shutdown_logging()
 
         assert len(os.listdir(tmpdir)) == constants.LOGFILES_ITERATION_COUNTER  # check total files created
-        assert sorted(os.listdir(tmpdir)) == sorted([constants.CUSTOM_LOGFILE_NAME, f"{constants.CUSTOM_LOGFILE_NAME}.1"])  # check that suffix is properly added as file extension
+        assert sorted(os.listdir(tmpdir)) == sorted([constants.CUSTOM_LOGFILE_NAME, f'{constants.CUSTOM_LOGFILE_NAME}.1'])  # check that suffix is properly added as file extension
 
 
 def test_rotating_file_handler_backup_count_overflow(constants: Constants) -> None:
@@ -52,17 +52,17 @@ def test_rotating_file_handler_backup_count_overflow(constants: Constants) -> No
         assert sorted(
             list(
                 map(
-                    lambda text: re.search(r"\d$", text).group(0),  # type: ignore
-                    [file_ for file_ in os.listdir(tmpdir) if file_ != constants.CUSTOM_LOGFILE_NAME]
-                )
-            )
+                    lambda text: re.search(r'\d$', text).group(0),  # type: ignore
+                    [file_ for file_ in os.listdir(tmpdir) if file_ != constants.CUSTOM_LOGFILE_NAME],
+                ),
+            ),
         ) == list(
             map(
                 str,
                 sorted(
-                    range(1, LoggerConstants.ROTATING_FILE_HANDLER_BACKUP_COUNT + 1)
-                )
-            )
+                    range(1, LoggerConstants.ROTATING_FILE_HANDLER_BACKUP_COUNT + 1),
+                ),
+            ),
         )
 
 

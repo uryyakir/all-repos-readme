@@ -14,7 +14,7 @@ class _Git:
 
 class GitConfigHandler(_Git):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
-        super(GitConfigHandler, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def __getitem__(self, item: Tuple[str, str]) -> str:
         return self._repo.config_reader(config_level=GitConstants.CONFIG_LEVEL.value).get_value(*item)
