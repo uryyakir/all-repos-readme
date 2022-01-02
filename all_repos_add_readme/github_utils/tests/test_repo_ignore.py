@@ -26,3 +26,10 @@ def test_repo_ignore(
 ) -> None:
     _repo_ignore = RepoIgnore(_test_patterns_lst=(expression,))
     assert _repo_ignore.should_ignore(get_github_repository_object) is should_filter
+
+
+def test_missing_repoignore_file() -> None:
+    with pytest.warns(UserWarning):
+        _repo_ignore = RepoIgnore(repoignore_filepath="random/path/.repoignore")
+
+    assert _repo_ignore._ignore_patterns == tuple()

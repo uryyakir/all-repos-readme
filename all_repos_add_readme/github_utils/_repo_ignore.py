@@ -45,7 +45,7 @@ class RepoIgnore:
                     )
 
             except FileNotFoundError:
-                warnings.warn(ExceptionMessages.NO_REPOIGNORE_FILE_WARNING.value)
+                warnings.warn(ExceptionMessages.NO_REPOIGNORE_FILE_WARNING.value, UserWarning)
                 self._ignore_patterns = tuple()
 
     def should_ignore(self, repo: Repository.Repository) -> bool:
