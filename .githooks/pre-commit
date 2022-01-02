@@ -3,7 +3,11 @@ echo 'searching for uncensored creds!'
 # script run
 export PATH=$PATH:$(pwd)
 export PYTHONPATH=$(pwd)
-venv/Scripts/python.exe .githooks/_pre_commit/_censor_creds.py
+if  [[ "$OSTYPE" == "msys" ]]; then
+	venv/Scripts/python.exe .githooks/_pre_commit/_censor_creds.py
+else
+	venv/bin/python3 .githooks/_pre_commit/_censor_creds.py
+fi
 
 if [ $? -eq 1 ]; then
   # config file was changed so apiKey isn't exposed.

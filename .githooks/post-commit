@@ -1,6 +1,10 @@
 #!/bin/sh
-echo 'restoring censored creds!'
+echo 'restoring censored creds^!'
 # script run
 export PATH=$PATH:$(pwd)
 export PYTHONPATH=$(pwd)
-venv/Scripts/python.exe .githooks/_post_commit/_restore_creds.py
+if  [[ "$OSTYPE" == "msys" ]]; then
+	venv/Scripts/python.exe .githooks/_post_commit/_restore_creds.py
+else
+	venv/bin/python3 .githooks/_post_commit/_restore_creds.py
+fi
