@@ -1,9 +1,17 @@
+from typing_extensions import Literal
 from typing import Tuple
 from typing import Any
 from git import Repo
 import os
+from enum import Enum
 # local modules
-from all_repos_add_readme.constants import GitConstants
+from all_repos_add_readme.constants import GithubConstants
+
+
+class GitConstants(Enum):
+    CONFIG_LEVEL: Literal['repository'] = 'repository'
+    API_KEY_CONFIG_SECTION = 'user'
+    API_KEY_CONFIG_PROPERTY = (API_KEY_CONFIG_SECTION, GithubConstants.API_KEY.value)
 
 
 class _Git:

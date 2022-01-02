@@ -1,10 +1,7 @@
 from typing import Tuple
-from typing_extensions import Literal
 from typing import List
 from enum import Enum
-from time import time
 import os
-import colorama
 
 
 class Constants:
@@ -68,34 +65,8 @@ class ToolArgumentNames:
         raise ValueError(f'Unsupported value. `how` value must be one of the following {_allowed_how_values}')
 
 
-class LoggerConstants:
-    # log constants
-    TOOL_LOGGER_NAME = 'logger'
-    TOOL_DEFAULT_LOGFILE_DIR = os.path.join(Constants.BASE_DIR, 'logs')
-    if not os.path.isdir(TOOL_DEFAULT_LOGFILE_DIR):  # pragma: no cover
-        os.mkdir(TOOL_DEFAULT_LOGFILE_DIR)
-
-    ROTATING_FILE_HANDLER_BACKUP_COUNT = 5
-
-    @property
-    def tool_default_logfile_name(self) -> str:
-        return f'logfile_{round(time())}.log'
-
-
 class GithubConstants(Enum):
     API_KEY = 'apiKey'
     USERNAME = 'username'
     GITHUB_CONFIG_FILE = os.path.join(os.getcwd(), 'config.json')
     REPOIGNORE_FILE = os.path.join(os.getcwd(), '.repoignore')
-
-
-class GitConstants(Enum):
-    CONFIG_LEVEL: Literal['repository'] = 'repository'
-    API_KEY_CONFIG_SECTION = 'user'
-    API_KEY_CONFIG_PROPERTY = (API_KEY_CONFIG_SECTION, GithubConstants.API_KEY.value)
-
-
-class LoggerColoring(Enum):
-    colorama.init()
-    GREEN = colorama.Fore.GREEN
-    RESET_SEQ = colorama.Style.RESET_ALL

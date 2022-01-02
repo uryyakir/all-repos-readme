@@ -5,7 +5,7 @@ import re
 # local modules
 from all_repos_add_readme._logger import setup_logger
 from all_repos_add_readme._logger import shutdown_logging
-from all_repos_add_readme.constants import LoggerConstants
+from all_repos_add_readme.logger_constants import LoggerConstants
 from all_repos_add_readme.github_utils import github_api
 from conftest import TestConstants
 

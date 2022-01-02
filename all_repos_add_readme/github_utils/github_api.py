@@ -10,8 +10,8 @@ import sys
 import logging
 # local modules
 from all_repos_add_readme._exceptions import RepoReadmeNeedsUpdate
-from all_repos_add_readme.constants import LoggerConstants
-from all_repos_add_readme.constants import LoggerColoring
+from all_repos_add_readme.logger_constants import LoggerConstants
+from all_repos_add_readme.logger_constants import LoggerColoring
 from all_repos_add_readme.constants import GithubConstants
 from all_repos_add_readme.constants import ToolArgumentNames
 from all_repos_add_readme.constants import Constants

@@ -6,8 +6,8 @@ import pytest
 from configparser import NoSectionError
 # local modules
 from all_repos_add_readme.github_utils.git_utils import GitConfigHandler
+from all_repos_add_readme.github_utils.git_utils import GitConstants
 from all_repos_add_readme.constants import GithubConstants
-from all_repos_add_readme.constants import GitConstants
 # import hooks python code
 sys.path.append(os.path.join(os.getcwd(), '.githooks/_post_commit'))
 sys.path.append(os.path.join(os.getcwd(), '.githooks/_pre_commit'))

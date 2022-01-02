@@ -6,7 +6,7 @@ import sys
 import logging
 import logging.handlers
 # local modules
-from all_repos_add_readme.constants import LoggerConstants
+from all_repos_add_readme.logger_constants import LoggerConstants
 
 
 def setup_logger(logger_name: str, verbose: bool, log_file_name: Optional[str], logs_directory: str = LoggerConstants.TOOL_DEFAULT_LOGFILE_DIR) -> None:

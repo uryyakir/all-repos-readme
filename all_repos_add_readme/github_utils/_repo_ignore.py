@@ -6,7 +6,7 @@ from typing import Tuple
 from typing import Any
 from typing import Optional
 # local modules
-from all_repos_add_readme.constants import LoggerConstants
+from all_repos_add_readme.logger_constants import LoggerConstants
 from all_repos_add_readme.constants import GithubConstants
 
 
