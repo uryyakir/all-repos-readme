@@ -8,3 +8,4 @@ PyGithub
 pytest
 pytest-ordering
 requests
+typing_extensions
