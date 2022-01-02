@@ -7,10 +7,8 @@ import datetime as dt
 from bs4 import BeautifulSoup as Soup
 import logging
 # local modules
-from all_repos_add_readme.constants import TOOL_DISCLAIMER_MD
-from all_repos_add_readme.constants import TOOL_NAME
+from all_repos_add_readme.constants import Constants
 from all_repos_add_readme.constants import LoggerConstants
-from all_repos_add_readme.constants import TOOL_README_TEMPLATE_PATH
 
 
 logger = logging.getLogger(LoggerConstants.TOOL_LOGGER_NAME)
@@ -19,7 +17,7 @@ logger = logging.getLogger(LoggerConstants.TOOL_LOGGER_NAME)
 class _Repo:
     def __init__(self, repo: Repository.Repository) -> None:
         self._repo = repo
-        self.tool_name = TOOL_NAME
+        self.tool_name = Constants.TOOL_NAME
         self.current_date = dt.date.today().strftime('%d/%m/%Y')
         # extracted properties
         self.full_name = repo.full_name
@@ -55,7 +53,7 @@ class _Repo:
         return soup_object
 
     def _append_tool_disclaimer(self, markdown_string: str) -> str:
-        return markdown_string + '\n' + TOOL_DISCLAIMER_MD.format(**self.__dict__)
+        return markdown_string + '\n' + Constants.TOOL_DISCLAIMER_MD.format(**self.__dict__)
 
     def generate_readme_string(self, user_input: Optional[str]) -> str:
         logger.debug('generating readme string for repo...')
@@ -66,7 +64,7 @@ class _Repo:
                 raise NotImplementedError()
 
         else:
-            with open(TOOL_README_TEMPLATE_PATH, encoding='utf-8') as readme_template_file:
+            with open(Constants.TOOL_README_TEMPLATE_PATH, encoding='utf-8') as readme_template_file:
                 formatted_readme = readme_template_file.read().format(
                     **self.__dict__,
                 )

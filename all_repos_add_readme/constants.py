@@ -1,4 +1,5 @@
 from typing import Tuple
+from typing_extensions import Literal
 from typing import List
 from enum import Enum
 from time import time
@@ -6,23 +7,25 @@ import os
 import colorama
 
 
-TOOL_NAME = 'all_repos_readme'
-TOOL_CLI_DESCRIPTION = "A tool to create a generic README.md for all of the user's owned REPOs.\n"
-'One can either provide a local readme-file (-rf) or provide a MD-formatted string (-rs).\n'
-"The provided input will be added to all of the user's owned REPOs that don't already have a readme file.\n"
-'If no input is provided, the tool will generate an automated README file for all REPOs.\n'
-'You can find the README default template under all_repos_add_readme/readme_template.md'
-TOOL_GITHUB_REPO_URL = 'https://github.com/uryyakir/all-repos-readme'
-TOOL_COMMIT_SIGNATURE = ' (automatically committed by the `all_repos_readme` tool)'
-TOOL_COMMIT_MESSAGE = 'add README.md' + TOOL_COMMIT_SIGNATURE
-TOOL_DISCLAIMER_MD = f"""#### Disclaimer: this is an auto-generated README.md file, committed by the [{{tool_name}}]({TOOL_GITHUB_REPO_URL}) tool at {{current_date}}.
-To update repo stats, re-run the tool :)"""
-README_TEMPLATE_FILE_NAME = 'readme_template.md'
-# directory-related and relative file paths constants
-PACKAGE_DIR, _ = os.path.split(__file__)
-BASE_DIR = os.path.abspath(os.path.join(PACKAGE_DIR, os.pardir))
-TOOL_README_TEMPLATE_PATH = os.path.join(PACKAGE_DIR, README_TEMPLATE_FILE_NAME)
-DATA_FILES: List[str] = []
+class Constants:
+    IS_TEST_RUN = False
+    TOOL_NAME = 'all_repos_readme'
+    TOOL_CLI_DESCRIPTION = "A tool to create a generic README.md for all of the user's owned REPOs.\n"
+    'One can either provide a local readme-file (-rf) or provide a MD-formatted string (-rs).\n'
+    "The provided input will be added to all of the user's owned REPOs that don't already have a readme file.\n"
+    'If no input is provided, the tool will generate an automated README file for all REPOs.\n'
+    'You can find the README default template under all_repos_add_readme/readme_template.md'
+    TOOL_GITHUB_REPO_URL = 'https://github.com/uryyakir/all-repos-readme'
+    TOOL_COMMIT_SIGNATURE = ' (automatically committed by the `all_repos_readme` tool)'
+    TOOL_COMMIT_MESSAGE = 'add README.md' + TOOL_COMMIT_SIGNATURE
+    TOOL_DISCLAIMER_MD = f"""#### Disclaimer: this is an auto-generated README.md file, committed by the [{{tool_name}}]({TOOL_GITHUB_REPO_URL}) tool at {{current_date}}.
+    To update repo stats, re-run the tool :)"""
+    README_TEMPLATE_FILE_NAME = 'readme_template.md'
+    # directory-related and relative file paths constants
+    PACKAGE_DIR, _ = os.path.split(__file__)
+    BASE_DIR = os.path.abspath(os.path.join(PACKAGE_DIR, os.pardir))
+    TOOL_README_TEMPLATE_PATH = os.path.join(PACKAGE_DIR, README_TEMPLATE_FILE_NAME)
+    DATA_FILES: List[str] = []
 
 
 class ToolArgumentNames:
@@ -33,8 +36,8 @@ class ToolArgumentNames:
     DRY_RUN_ARGUMENT = 'dry_run'
     COMMIT_MESSAGE_ARGUMENT = 'commit_message'
     LOG_TO_FILE_ARGUMENT = 'log_to_file'
-    CONFIG_FILENAME_ARGUMENT = 'config_filename'
-    REPOIGNORE_FILENAME_ARGUMENT = 'repoignore_filename'
+    CONFIG_FILEPATH_ARGUMENT = 'config_filepath'
+    REPOIGNORE_FILEPATH_ARGUMENT = 'repoignore_filepath'
 
     def __getattr__(self, item: str) -> str:
         argument_name = (ToolArgumentNames.__dict__[item.upper() + '_ARGUMENT']).replace('_', '-')
@@ -68,7 +71,7 @@ class ToolArgumentNames:
 class LoggerConstants:
     # log constants
     TOOL_LOGGER_NAME = 'logger'
-    TOOL_DEFAULT_LOGFILE_DIR = os.path.join(BASE_DIR, 'logs')
+    TOOL_DEFAULT_LOGFILE_DIR = os.path.join(Constants.BASE_DIR, 'logs')
     if not os.path.isdir(TOOL_DEFAULT_LOGFILE_DIR):  # pragma: no cover
         os.mkdir(TOOL_DEFAULT_LOGFILE_DIR)
 
@@ -87,7 +90,7 @@ class GithubConstants(Enum):
 
 
 class GitConstants(Enum):
-    CONFIG_LEVEL = 'repository'
+    CONFIG_LEVEL: Literal['repository'] = 'repository'
     API_KEY_CONFIG_SECTION = 'user'
     API_KEY_CONFIG_PROPERTY = (API_KEY_CONFIG_SECTION, GithubConstants.API_KEY.value)
 

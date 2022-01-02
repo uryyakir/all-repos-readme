@@ -17,7 +17,9 @@ class GitConfigHandler(_Git):
         super().__init__(*args, **kwargs)
 
     def __getitem__(self, item: Tuple[str, str]) -> str:
-        return self._repo.config_reader(config_level=GitConstants.CONFIG_LEVEL.value).get_value(*item)
+        ret = self._repo.config_reader(config_level=GitConstants.CONFIG_LEVEL.value).get_value(*item)
+        assert isinstance(ret, str)
+        return ret
 
     def __setitem__(self, key: Tuple[str, str], value: str) -> None:
         self._repo.config_writer(config_level=GitConstants.CONFIG_LEVEL.value).set_value(*key, value).release()

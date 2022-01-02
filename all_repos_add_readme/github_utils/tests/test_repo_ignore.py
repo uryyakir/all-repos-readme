@@ -1,7 +1,7 @@
 import pytest
 from github.Repository import Repository
 # local modules
-from conftest import Constants
+from conftest import TestConstants
 from all_repos_add_readme.github_utils._repo_ignore import RepoIgnore
 
 
@@ -9,9 +9,9 @@ from all_repos_add_readme.github_utils._repo_ignore import RepoIgnore
     ('expression', 'should_filter'),
     [
         (r'.*', True),
-        (Constants.TEST_AGAINST_REPO_NAME, True),
+        (TestConstants.TEST_AGAINST_REPO_NAME, True),
         (r'\w+', True),
-        (Constants.TEST_AGAINST_USERNAME + '/' + Constants.TEST_AGAINST_REPO_NAME, True),
+        (TestConstants.TEST_AGAINST_USERNAME + '/' + TestConstants.TEST_AGAINST_REPO_NAME, True),
         ('other_random_repo', False),
     ],
 )

@@ -7,10 +7,10 @@ from all_repos_add_readme._logger import setup_logger
 from all_repos_add_readme._logger import shutdown_logging
 from all_repos_add_readme.constants import LoggerConstants
 from all_repos_add_readme.github_utils import github_api
-from conftest import Constants
+from conftest import TestConstants
 
 
-def test_logger_auto_generated_namings(constants: Constants) -> None:
+def test_logger_auto_generated_namings(constants: TestConstants) -> None:
     with tempfile.TemporaryDirectory(dir=LoggerConstants.TOOL_DEFAULT_LOGFILE_DIR) as tmpdir:
         for _ in range(constants.LOGFILES_ITERATION_COUNTER):
             setup_logger(logger_name=LoggerConstants.TOOL_LOGGER_NAME, verbose=False, log_file_name=LoggerConstants().tool_default_logfile_name, logs_directory=tmpdir)
@@ -29,7 +29,7 @@ def test_logger_auto_generated_namings(constants: Constants) -> None:
         shutdown_logging()
 
 
-def test_logger_custom_log_namings(constants: Constants) -> None:
+def test_logger_custom_log_namings(constants: TestConstants) -> None:
     with tempfile.TemporaryDirectory(dir=LoggerConstants.TOOL_DEFAULT_LOGFILE_DIR) as tmpdir:
         for _ in range(constants.LOGFILES_ITERATION_COUNTER):
             setup_logger(logger_name=LoggerConstants.TOOL_LOGGER_NAME, verbose=False, log_file_name=constants.CUSTOM_LOGFILE_NAME, logs_directory=tmpdir)
@@ -40,7 +40,7 @@ def test_logger_custom_log_namings(constants: Constants) -> None:
         assert sorted(os.listdir(tmpdir)) == sorted([constants.CUSTOM_LOGFILE_NAME, f'{constants.CUSTOM_LOGFILE_NAME}.1'])  # check that suffix is properly added as file extension
 
 
-def test_rotating_file_handler_backup_count_overflow(constants: Constants) -> None:
+def test_rotating_file_handler_backup_count_overflow(constants: TestConstants) -> None:
     with tempfile.TemporaryDirectory(dir=LoggerConstants.TOOL_DEFAULT_LOGFILE_DIR) as tmpdir:
         for _ in range(LoggerConstants.ROTATING_FILE_HANDLER_BACKUP_COUNT + 5):
             setup_logger(logger_name=LoggerConstants.TOOL_LOGGER_NAME, verbose=False, log_file_name=constants.CUSTOM_LOGFILE_NAME, logs_directory=tmpdir)
@@ -66,7 +66,7 @@ def test_rotating_file_handler_backup_count_overflow(constants: Constants) -> No
         )
 
 
-def test_verbose_changes_logger_level(constants: Constants) -> None:
+def test_verbose_changes_logger_level(constants: TestConstants) -> None:
     with tempfile.TemporaryDirectory(dir=LoggerConstants.TOOL_DEFAULT_LOGFILE_DIR) as tmpdir:
         setup_logger(logger_name=LoggerConstants.TOOL_LOGGER_NAME, verbose=False, log_file_name=constants.CUSTOM_LOGFILE_NAME, logs_directory=tmpdir)
         logger = logging.getLogger(LoggerConstants.TOOL_LOGGER_NAME)
