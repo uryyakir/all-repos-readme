@@ -22,7 +22,7 @@ class Constants:
     README_TEMPLATE_FILE_NAME = 'readme_template.md'
     # directory-related and relative file paths constants
     PACKAGE_DIR, _ = os.path.split(__file__)
-    BASE_DIR = os.path.abspath(os.path.join(PACKAGE_DIR, os.pardir))
+    BASE_DIR = os.path.abspath(PACKAGE_DIR)
     TOOL_README_TEMPLATE_PATH = os.path.join(PACKAGE_DIR, README_TEMPLATE_FILE_NAME)
     DATA_FILES: List[str] = []
 
