@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup as Soup
 import logging
 # local modules
 from all_repos_add_readme.constants import Constants
-from all_repos_add_readme.constants import LoggerConstants
+from all_repos_add_readme.logger_constants import LoggerConstants
 
 
 logger = logging.getLogger(LoggerConstants.TOOL_LOGGER_NAME)
