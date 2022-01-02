@@ -1,14 +1,13 @@
 import os
 import pytest
 # local modules
-from all_repos_add_readme.constants import TOOL_GITHUB_REPO_URL
-from all_repos_add_readme.constants import TOOL_DISCLAIMER_MD
+from all_repos_add_readme.constants import Constants
 from all_repos_add_readme.constants import GithubConstants
 from all_repos_add_readme.constants import ToolArgumentNames
 
 
 def test_tool_disclaimer_markdown() -> None:
-    assert TOOL_GITHUB_REPO_URL in TOOL_DISCLAIMER_MD
+    assert Constants.TOOL_GITHUB_REPO_URL in Constants.TOOL_DISCLAIMER_MD
 
 
 def test_config_file_exists() -> None:

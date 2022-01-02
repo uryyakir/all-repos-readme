@@ -1,4 +1,5 @@
 import pytest
+from _pytest.config import Config
 from github import Github
 from github.Repository import Repository
 from github.Commit import Commit
@@ -7,10 +8,14 @@ from typing import Type
 import datetime as dt
 # local modules
 from all_repos_add_readme.constants import GithubConstants
-from all_repos_add_readme.constants import TOOL_NAME
-from all_repos_add_readme.constants import TOOL_DISCLAIMER_MD
+from all_repos_add_readme.constants import Constants
 from all_repos_add_readme.github_utils._github_repo import _Repo  # noqa
 from all_repos_add_readme.github_utils.git_utils import GitConfigHandler
+
+
+def pytest_configure(config: Config) -> None:  # noqa
+    Constants.IS_TEST_RUN = True
+    return
 
 
 @pytest.fixture
@@ -38,14 +43,14 @@ def git_config_handler_object() -> GitConfigHandler:
     return github_config_handler  # return a reference instead of reinitializing for every test function
 
 
-class Constants:
+class TestConstants:
     # test_repo_ignore.py constants
     TEST_AGAINST_USERNAME = 'uryyakir'
     TEST_AGAINST_REPO_NAME = 'all-repos-readme-testing'
     # test_github_repo.py constants
     TEST_MARKDOWN_FILE_PATH = 'all_repos_add_readme/github_utils/tests/test_markdown.md'
     TOOL_TEST_STRING = 'some string'
-    TOOL_SIGNATURE_STRING = TOOL_DISCLAIMER_MD.format(tool_name=TOOL_NAME, current_date=dt.datetime.today().strftime('%d/%m/%Y'))
+    TOOL_SIGNATURE_STRING = Constants.TOOL_DISCLAIMER_MD.format(tool_name=Constants.TOOL_NAME, current_date=dt.datetime.today().strftime('%d/%m/%Y'))
     # test_git_utils.py constants
     TEST_SECTION_NAME = 'testSectionName'
     TEST_PROPERTY_NAME = 'testPropertyName'
@@ -71,5 +76,5 @@ class Constants:
 
 
 @pytest.fixture
-def constants() -> Type[Constants]:
-    return Constants
+def constants() -> Type[TestConstants]:
+    return TestConstants

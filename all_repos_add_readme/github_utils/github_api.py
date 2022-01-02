@@ -10,13 +10,11 @@ import sys
 import logging
 # local modules
 from all_repos_add_readme._exceptions import RepoReadmeNeedsUpdate
-from all_repos_add_readme.constants import TOOL_NAME
-from all_repos_add_readme.constants import TOOL_COMMIT_MESSAGE
-from all_repos_add_readme.constants import TOOL_COMMIT_SIGNATURE
 from all_repos_add_readme.constants import LoggerConstants
 from all_repos_add_readme.constants import LoggerColoring
 from all_repos_add_readme.constants import GithubConstants
 from all_repos_add_readme.constants import ToolArgumentNames
+from all_repos_add_readme.constants import Constants
 from all_repos_add_readme.github_utils._repo_ignore import RepoIgnore
 from all_repos_add_readme.github_utils._github_repo import _Repo
 from all_repos_add_readme.github_utils._github_config import _GithubConfig
@@ -29,7 +27,11 @@ class GitHubAPI:
     def __init__(self, **kwargs: Any) -> None:
         self._user_input = kwargs[ToolArgumentNames.USER_INPUT_ARGUMENT]
         self._dry_run = kwargs[ToolArgumentNames.DRY_RUN_ARGUMENT]
-        self._commit_message = kwargs[ToolArgumentNames.COMMIT_MESSAGE_ARGUMENT] + TOOL_COMMIT_SIGNATURE if kwargs[ToolArgumentNames.COMMIT_MESSAGE_ARGUMENT] else TOOL_COMMIT_MESSAGE
+        self._commit_message = (
+            kwargs[ToolArgumentNames.COMMIT_MESSAGE_ARGUMENT] + Constants.TOOL_COMMIT_SIGNATURE
+            if kwargs[ToolArgumentNames.COMMIT_MESSAGE_ARGUMENT]
+            else Constants.TOOL_COMMIT_MESSAGE
+        )
         self._repo_ignore = RepoIgnore(**kwargs)
 
     def run_tool(self, github_repo: Repository) -> Optional[Dict[str, str]]:
@@ -42,7 +44,7 @@ class GitHubAPI:
                 assert isinstance(readme_file, ContentFile)
                 readme_content = readme_file.decoded_content.decode()
 
-                if TOOL_NAME in readme_content:
+                if Constants.TOOL_NAME in readme_content:
                     # repo already has a README.md file generate by the tool
                     # let's update its stats
                     logger.debug(f'found tool signature in {github_repo.full_name} README file - invoking README update')
@@ -112,21 +114,25 @@ class GitHubAPI:
                 return None
 
 
+def _get_config_json(config_filepath: str) -> Dict[str, str]:
+    with open(
+            config_filepath if config_filepath else GithubConstants.GITHUB_CONFIG_FILE.value,
+            encoding='utf8',
+    ) as config_file:
+        return json.load(config_file)
+
+
 def main(
         user_input: Optional[str],
         dry_run: bool,
         commit_message: Optional[str] = None,
-        config_filename: Optional[str] = None,
-        repoignore_filename: Optional[str] = None,
+        config_filepath: Optional[str] = None,
+        repoignore_filepath: Optional[str] = None,
         **kwargs: Any,
 ) -> int:
     changes_dict = {}
     github_api = GitHubAPI(**{**locals(), **kwargs})
-    with open(
-            config_filename if config_filename else GithubConstants.GITHUB_CONFIG_FILE.value,
-            encoding='utf8',
-    ) as config_file:
-        _config_content = json.load(config_file)
+    _config_content = _get_config_json(config_filepath=config_filepath)
 
     assert GithubConstants.API_KEY.value in _config_content.keys()
     github_config = _GithubConfig(**_config_content)
@@ -139,5 +145,6 @@ def main(
 
         logger.info(f"tool run on repo {github_repo.full_name}: {LoggerColoring.GREEN.value}done\n{LoggerColoring.RESET_SEQ.value}{'*' * 10}")
 
-    print(json.dumps(changes_dict), file=sys.stderr)  # for testing purposes
+    if Constants.IS_TEST_RUN:
+        print(json.dumps(changes_dict), file=sys.stderr)  # for testing purposes
     return 0
