@@ -114,7 +114,7 @@ class GitHubAPI:
                 return None
 
 
-def _get_config_json(config_filepath: str) -> Dict[str, str]:
+def _get_config_json(config_filepath: Optional[str]) -> Dict[str, str]:
     with open(
             config_filepath if config_filepath else GithubConstants.GITHUB_CONFIG_FILE.value,
             encoding='utf8',

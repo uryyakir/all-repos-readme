@@ -1,4 +1,5 @@
 from typing import Tuple
+from typing_extensions import Literal
 from typing import List
 from enum import Enum
 from time import time
@@ -89,7 +90,7 @@ class GithubConstants(Enum):
 
 
 class GitConstants(Enum):
-    CONFIG_LEVEL = 'repository'
+    CONFIG_LEVEL: Literal['repository'] = 'repository'
     API_KEY_CONFIG_SECTION = 'user'
     API_KEY_CONFIG_PROPERTY = (API_KEY_CONFIG_SECTION, GithubConstants.API_KEY.value)
 
