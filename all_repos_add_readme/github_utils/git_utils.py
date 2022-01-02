@@ -4,6 +4,7 @@ from typing import Any
 from git import Repo
 import os
 from enum import Enum
+
 # local modules
 from all_repos_add_readme.constants import GithubConstants
 
@@ -25,12 +26,16 @@ class GitConfigHandler(_Git):
         super().__init__(*args, **kwargs)
 
     def __getitem__(self, item: Tuple[str, str]) -> str:
-        ret = self._repo.config_reader(config_level=GitConstants.CONFIG_LEVEL.value).get_value(*item)
+        ret = self._repo.config_reader(
+            config_level=GitConstants.CONFIG_LEVEL.value,
+        ).get_value(*item)
         assert isinstance(ret, str)
         return ret
 
     def __setitem__(self, key: Tuple[str, str], value: str) -> None:
-        self._repo.config_writer(config_level=GitConstants.CONFIG_LEVEL.value).set_value(*key, value).release()
+        self._repo.config_writer(
+            config_level=GitConstants.CONFIG_LEVEL.value,
+        ).set_value(*key, value).release()
         return
 
     def __delitem__(self, key: str) -> bool:

@@ -5,16 +5,24 @@ import os
 import sys
 import logging
 import logging.handlers
+
 # local modules
 from all_repos_add_readme.logger_constants import LoggerConstants
 
 
-def setup_logger(logger_name: str, verbose: bool, log_file_name: Optional[str], logs_directory: str = LoggerConstants.TOOL_DEFAULT_LOGFILE_DIR) -> None:
+def setup_logger(
+    logger_name: str,
+    verbose: bool,
+    log_file_name: Optional[str],
+    logs_directory: str = LoggerConstants.TOOL_DEFAULT_LOGFILE_DIR,
+) -> None:
     shutdown_logging()
     logger = logging.getLogger(logger_name)
     logger.setLevel(logging.DEBUG if verbose else logging.INFO)
 
-    logger_handler: Optional[Union[logging.StreamHandler[IO[str]], logging.handlers.RotatingFileHandler]]
+    logger_handler: Optional[
+        Union[logging.StreamHandler[IO[str]], logging.handlers.RotatingFileHandler]
+    ]
     if log_file_name:
         # user requested the logger to log to a file
         _log_filename = os.path.join(logs_directory, log_file_name)

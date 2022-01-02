@@ -6,6 +6,7 @@ from github.Commit import Commit
 import json
 from typing import Type
 import datetime as dt
+
 # local modules
 from all_repos_add_readme.constants import GithubConstants
 from all_repos_add_readme.constants import Constants
@@ -20,10 +21,14 @@ def pytest_configure(config: Config) -> None:  # noqa
 
 @pytest.fixture
 def get_github_repository_object() -> Repository:
-    with open(GithubConstants.GITHUB_CONFIG_FILE.value, encoding='utf-8') as config_file:
+    with open(
+        GithubConstants.GITHUB_CONFIG_FILE.value, encoding='utf-8',
+    ) as config_file:
         _config = json.load(config_file)
 
-    return Github(login_or_token=_config[GithubConstants.API_KEY.value]).get_repo(full_name_or_id='uryyakir/all-repos-readme-testing')
+    return Github(login_or_token=_config[GithubConstants.API_KEY.value]).get_repo(
+        full_name_or_id='uryyakir/all-repos-readme-testing',
+    )
 
 
 @pytest.fixture
@@ -50,7 +55,10 @@ class TestConstants:
     # test_github_repo.py constants
     TEST_MARKDOWN_FILE_PATH = 'all_repos_add_readme/github_utils/tests/test_markdown.md'
     TOOL_TEST_STRING = 'some string'
-    TOOL_SIGNATURE_STRING = Constants.TOOL_DISCLAIMER_MD.format(tool_name=Constants.TOOL_NAME, current_date=dt.datetime.today().strftime('%d/%m/%Y'))
+    TOOL_SIGNATURE_STRING = Constants.TOOL_DISCLAIMER_MD.format(
+        tool_name=Constants.TOOL_NAME,
+        current_date=dt.datetime.today().strftime('%d/%m/%Y'),
+    )
     # test_git_utils.py constants
     TEST_SECTION_NAME = 'testSectionName'
     TEST_PROPERTY_NAME = 'testPropertyName'
