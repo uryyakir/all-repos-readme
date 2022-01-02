@@ -30,7 +30,7 @@ def setup_logger(
         logger_handler = logging.handlers.RotatingFileHandler(
             filename=_log_filename,
             maxBytes=5 * 1024 * 1024,
-            mode="w",
+            mode='w',
             backupCount=LoggerConstants.ROTATING_FILE_HANDLER_BACKUP_COUNT,
         )
         if _should_rollover:
@@ -39,7 +39,7 @@ def setup_logger(
     else:
         logger_handler = logging.StreamHandler(sys.stderr)
 
-    formatter = logging.Formatter("%(asctime)s: %(name)s - %(levelname)s - %(message)s")
+    formatter = logging.Formatter('%(asctime)s: %(name)s - %(levelname)s - %(message)s')
     logger_handler.setFormatter(formatter)
     logger_handler.setLevel(logging.DEBUG if verbose else logging.INFO)
     logger.addHandler(logger_handler)

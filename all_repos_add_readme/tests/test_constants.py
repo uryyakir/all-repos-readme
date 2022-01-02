@@ -18,5 +18,5 @@ def test_config_file_exists() -> None:
 def test_gen_argument_name_unsupported_how_arg() -> None:
     with pytest.raises(ValueError):
         ToolArgumentNames.gen_argument_name(
-            ToolArgumentNames.README_FILE_ARGUMENT, how="bad input"
+            ToolArgumentNames.README_FILE_ARGUMENT, how='bad input',
         )

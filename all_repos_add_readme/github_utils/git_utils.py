@@ -10,8 +10,8 @@ from all_repos_add_readme.constants import GithubConstants
 
 
 class GitConstants(Enum):
-    CONFIG_LEVEL: Literal["repository"] = "repository"
-    API_KEY_CONFIG_SECTION = "user"
+    CONFIG_LEVEL: Literal['repository'] = 'repository'
+    API_KEY_CONFIG_SECTION = 'user'
     API_KEY_CONFIG_PROPERTY = (API_KEY_CONFIG_SECTION, GithubConstants.API_KEY.value)
 
 
@@ -27,14 +27,14 @@ class GitConfigHandler(_Git):
 
     def __getitem__(self, item: Tuple[str, str]) -> str:
         ret = self._repo.config_reader(
-            config_level=GitConstants.CONFIG_LEVEL.value
+            config_level=GitConstants.CONFIG_LEVEL.value,
         ).get_value(*item)
         assert isinstance(ret, str)
         return ret
 
     def __setitem__(self, key: Tuple[str, str], value: str) -> None:
         self._repo.config_writer(
-            config_level=GitConstants.CONFIG_LEVEL.value
+            config_level=GitConstants.CONFIG_LEVEL.value,
         ).set_value(*key, value).release()
         return
 

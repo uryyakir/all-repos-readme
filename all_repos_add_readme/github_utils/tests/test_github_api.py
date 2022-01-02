@@ -13,7 +13,7 @@ from all_repos_add_readme.constants import Constants
 
 
 def _assert_expected_exit_code(
-    capsys: CaptureFixture[AnyStr], exit_code: int, expected_err_json_len: int
+    capsys: CaptureFixture[AnyStr], exit_code: int, expected_err_json_len: int,
 ) -> Dict[str, str]:
     assert exit_code == 0
 
@@ -65,9 +65,9 @@ def test_tool_custom_commit_message(
     _ = _assert_expected_exit_code(capsys, exit_code, 1)
 
     assert get_last_commit(get_github_repository_object).commit.message.startswith(
-        constants.TEST_CUSTOM_COMMIT_MESSAGE
+        constants.TEST_CUSTOM_COMMIT_MESSAGE,
     ) and get_last_commit(get_github_repository_object).commit.message.endswith(
-        Constants.TOOL_COMMIT_SIGNATURE
+        Constants.TOOL_COMMIT_SIGNATURE,
     )
 
 
@@ -89,7 +89,7 @@ def test_tool_custom_user_input(
     assert isinstance(readme_file, ContentFile)
     readme_content = readme_file.decoded_content.decode()
     assert readme_content.startswith(
-        constants.TEST_USER_INPUT
+        constants.TEST_USER_INPUT,
     ) and readme_content.endswith(constants.TOOL_SIGNATURE_STRING)
 
 
@@ -99,8 +99,8 @@ def test_tool_create_missing_readme(
     constants: TestConstants,
 ) -> None:
     get_github_repository_object.delete_file(
-        path="README.md",
-        message="delete README.md" + Constants.TOOL_COMMIT_SIGNATURE,
+        path='README.md',
+        message='delete README.md' + Constants.TOOL_COMMIT_SIGNATURE,
         sha=get_github_repository_object.get_readme().sha,
     )
     exit_code = github_api.main(

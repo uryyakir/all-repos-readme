@@ -13,7 +13,7 @@ from conftest import TestConstants
 
 def test_logger_auto_generated_namings(constants: TestConstants) -> None:
     with tempfile.TemporaryDirectory(
-        dir=LoggerConstants.TOOL_DEFAULT_LOGFILE_DIR
+        dir=LoggerConstants.TOOL_DEFAULT_LOGFILE_DIR,
     ) as tmpdir:
         for _ in range(constants.LOGFILES_ITERATION_COUNTER):
             setup_logger(
@@ -35,7 +35,7 @@ def test_logger_auto_generated_namings(constants: TestConstants) -> None:
             len(
                 set(
                     map(
-                        lambda text: re.search(r"\d+", text).group(0),  # type: ignore
+                        lambda text: re.search(r'\d+', text).group(0),  # type: ignore
                         os.listdir(tmpdir),
                     ),
                 ),
@@ -48,7 +48,7 @@ def test_logger_auto_generated_namings(constants: TestConstants) -> None:
 
 def test_logger_custom_log_namings(constants: TestConstants) -> None:
     with tempfile.TemporaryDirectory(
-        dir=LoggerConstants.TOOL_DEFAULT_LOGFILE_DIR
+        dir=LoggerConstants.TOOL_DEFAULT_LOGFILE_DIR,
     ) as tmpdir:
         for _ in range(constants.LOGFILES_ITERATION_COUNTER):
             setup_logger(
@@ -68,13 +68,13 @@ def test_logger_custom_log_namings(constants: TestConstants) -> None:
             len(os.listdir(tmpdir)) == constants.LOGFILES_ITERATION_COUNTER
         )  # check total files created
         assert sorted(os.listdir(tmpdir)) == sorted(
-            [constants.CUSTOM_LOGFILE_NAME, f"{constants.CUSTOM_LOGFILE_NAME}.1"]
+            [constants.CUSTOM_LOGFILE_NAME, f'{constants.CUSTOM_LOGFILE_NAME}.1'],
         )  # check that suffix is properly added as file extension
 
 
 def test_rotating_file_handler_backup_count_overflow(constants: TestConstants) -> None:
     with tempfile.TemporaryDirectory(
-        dir=LoggerConstants.TOOL_DEFAULT_LOGFILE_DIR
+        dir=LoggerConstants.TOOL_DEFAULT_LOGFILE_DIR,
     ) as tmpdir:
         for _ in range(LoggerConstants.ROTATING_FILE_HANDLER_BACKUP_COUNT + 5):
             setup_logger(
@@ -98,7 +98,7 @@ def test_rotating_file_handler_backup_count_overflow(constants: TestConstants) -
         assert sorted(
             list(
                 map(
-                    lambda text: re.search(r"\d$", text).group(0),  # type: ignore
+                    lambda text: re.search(r'\d$', text).group(0),  # type: ignore
                     [
                         file_
                         for file_ in os.listdir(tmpdir)
@@ -118,7 +118,7 @@ def test_rotating_file_handler_backup_count_overflow(constants: TestConstants) -
 
 def test_verbose_changes_logger_level(constants: TestConstants) -> None:
     with tempfile.TemporaryDirectory(
-        dir=LoggerConstants.TOOL_DEFAULT_LOGFILE_DIR
+        dir=LoggerConstants.TOOL_DEFAULT_LOGFILE_DIR,
     ) as tmpdir:
         setup_logger(
             logger_name=LoggerConstants.TOOL_LOGGER_NAME,
